@@ -1,18 +1,33 @@
 (function () {
   var racine = document.documentElement;
 
-  /* Une nouvelle page s'ouvre toujours en haut (sauf lien vers une section précise) */
+  /* Une nouvelle page s'ouvre toujours en haut (sauf lien vers une section précise).
+     Le repère #haut sert aussi quand le site est affiché dans un cadre dont c'est la page hôte qui défile. */
+  var haut = document.getElementById("haut");
+  var enHaut = function () {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    if (haut) {
+      try { haut.focus({ preventScroll: false }); } catch (e) {}
+      haut.scrollIntoView({ block: "start", inline: "nearest", behavior: "instant" });
+    }
+  };
   if (!location.hash) {
     try { history.scrollRestoration = "manual"; } catch (e) {}
-    var enHaut = function () {
-      window.scrollTo(0, 0);
-      var tete = document.querySelector(".entete");
-      if (tete && tete.scrollIntoView) tete.scrollIntoView({ block: "start", behavior: "instant" });
-    };
     enHaut();
+    window.addEventListener("DOMContentLoaded", enHaut);
+    window.addEventListener("load", enHaut);
     window.addEventListener("pageshow", enHaut);
   }
-  var calme = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* On remonte aussi au moment du clic sur un lien vers une autre page */
+  document.addEventListener("click", function (e) {
+    var lien = e.target.closest && e.target.closest("a[href]");
+    if (!lien || lien.target === "_blank") return;
+    var href = lien.getAttribute("href");
+    if (/^(#|tel:|mailto:|https?:)/.test(href) || href.indexOf("#") !== -1) return;
+    enHaut();
+  }, true);
 
   /* Menu mobile */
   var btn = document.getElementById("menu-btn"), nav = document.getElementById("nav");

@@ -382,9 +382,8 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
 .flottants { position: fixed; z-index: 35; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 12px; }
 .flottant { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; color: #fff; box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.8); transition: transform .35s var(--fluide); }
 .flottant:hover { transform: translateY(-3px) scale(1.06); }
-.flottant--wa { background: #1fa855; }
 .flottant--tel { background: var(--degrade); color: var(--encre); }
-@media (min-width: 901px) { .flottant--tel { display: none; } }
+
 .champ input[type="file"] { padding: 11px 12px; font-size: 0.92rem; }
 .pied { padding-bottom: 96px; }
 .voie .liste { align-content: start; }
