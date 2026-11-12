@@ -1,0 +1,162 @@
+<!-- titre: Vendre ma voiture ZYCAR -->
+<!-- description: Faites estimer votre voiture gratuitement par ZYCAR : rachat immédiat ou dépôt-vente à Saint-Georges-de-Reneins (69). Réponse sous 24 heures. -->
+
+  <section class="page-tete">
+    <div class="halos" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="cadre">
+      <p class="pastille r">Estimation, rachat et dépôt-vente</p>
+      <h1 class="r" style="--d:.08s">Vendez votre voiture <span class="degrade">sans vous en occuper.</span></h1>
+      <p class="chapeau r" style="--d:.16s">Décrivez votre véhicule, nous vous donnons notre estimation sous 24 heures. Vous choisissez ensuite entre un rachat immédiat et un dépôt-vente.</p>
+      <div class="ouverture__actions r" style="--d:.24s">
+        <a class="bouton" href="#estimation">Faire estimer ma voiture <span class="fleche" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--serree">
+    <div class="cadre">
+      <div class="tete">
+        <p class="pastille r">Deux solutions</p>
+        <h2 class="r" style="--d:.08s">Rachat immédiat <span class="degrade">ou dépôt-vente.</span></h2>
+      </div>
+      <div class="voies">
+        <article class="carte voie r">
+          <h3>Rachat immédiat</h3>
+          <p>Nous achetons votre voiture. Vous êtes payé rapidement et vous n'avez plus à vous soucier de la vente.</p>
+          <ul class="liste">
+            <li>Le plus rapide : idéal si vous avez besoin de vendre vite</li>
+            <li>Prix ferme, annoncé après examen du véhicule</li>
+            <li>Nous nous chargeons des démarches de cession</li>
+          </ul>
+        </article>
+        <article class="carte voie voie--phare r" style="--d:.12s">
+          <h3>Dépôt-vente</h3>
+          <p>Vous nous confiez votre voiture, nous la vendons pour vous. Elle reste votre propriété jusqu'à la vente.</p>
+          <ul class="liste">
+            <li>Un prix de vente généralement plus élevé qu'un rachat</li>
+            <li>Nous gérons les photos, l'annonce, les appels, les essais et la négociation</li>
+            <li>Aucun inconnu chez vous, aucun risque de faux paiement</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--serree">
+    <div class="cadre">
+      <div class="tete">
+        <p class="pastille r">Comment ça se passe</p>
+        <h2 class="r" style="--d:.08s">De l'estimation <span class="degrade">à la vente.</span></h2>
+      </div>
+      <div class="trio">
+        <article class="carte r"><h3>1. Vous décrivez votre voiture</h3><p>Le formulaire ci-dessous prend trois minutes. Les photos nous aident à être précis.</p></article>
+        <article class="carte r" style="--d:.1s"><h3>2. Nous vous rappelons</h3><p>Sous 24 heures, avec une première estimation fondée sur le marché actuel et l'état décrit.</p></article>
+        <article class="carte r" style="--d:.2s"><h3>3. Nous voyons le véhicule</h3><p>À notre local de Saint-Georges-de-Reneins. Nous confirmons le prix et vous choisissez votre solution.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--serree" id="estimation">
+    <div class="cadre">
+      <div class="demande">
+        <div class="demande__intro">
+          <p class="pastille r">Estimation gratuite</p>
+          <h2 class="r" style="--d:.08s">Décrivez <span class="degrade">votre voiture.</span></h2>
+          <p class="chapeau r" style="--d:.16s">Sans engagement. L'estimation définitive est donnée après avoir vu le véhicule.</p>
+          <ul class="coordonnees r" style="--d:.24s">
+            <li><i aria-hidden="true">☎</i><div><small>Vous préférez en parler ?</small><a href="tel:+33783198821">07 83 19 88 21</a></div></li>
+          </ul>
+        </div>
+
+        <form class="carte formulaire r" name="estimation" method="POST" action="merci.html" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="site-web">
+          <input type="hidden" name="form-name" value="estimation">
+          <p class="piege"><label>Ne pas remplir : <input name="site-web" tabindex="-1" autocomplete="off"></label></p>
+
+          <fieldset class="champ champ--large">
+            <legend>Ce qui vous intéresse</legend>
+            <div class="choix">
+              <label><input id="e-type-1" type="radio" name="solution" value="Rachat immédiat"><span>Rachat immédiat</span></label>
+              <label><input id="e-type-2" type="radio" name="solution" value="Dépôt-vente"><span>Dépôt-vente</span></label>
+              <label><input id="e-type-3" type="radio" name="solution" value="Je ne sais pas encore" checked><span>Je ne sais pas encore</span></label>
+            </div>
+          </fieldset>
+
+          <p class="formulaire__titre">Votre véhicule</p>
+          <div class="champ">
+            <label for="e-immat">Immatriculation</label>
+            <input id="e-immat" name="immatriculation" type="text" placeholder="Ex. AB-123-CD" autocapitalize="characters">
+          </div>
+          <div class="champ">
+            <label for="e-marque">Marque et modèle</label>
+            <input id="e-marque" name="marque-modele" type="text" placeholder="Ex. BMW Série 1 118i M Sport" required>
+          </div>
+          <div class="champ">
+            <label for="e-annee">Année de mise en circulation</label>
+            <input id="e-annee" name="annee" type="text" inputmode="numeric" placeholder="Ex. 2020" required>
+          </div>
+          <div class="champ">
+            <label for="e-km">Kilométrage</label>
+            <input id="e-km" name="kilometrage" type="text" inputmode="numeric" placeholder="Ex. 68 000 km" required>
+          </div>
+          <div class="champ">
+            <label for="e-energie">Énergie</label>
+            <select id="e-energie" name="energie">
+              <option>Essence</option><option>Diesel</option><option>Hybride</option><option>Électrique</option>
+            </select>
+          </div>
+          <div class="champ">
+            <label for="e-boite">Boîte de vitesses</label>
+            <select id="e-boite" name="boite">
+              <option>Automatique</option><option>Manuelle</option>
+            </select>
+          </div>
+          <div class="champ">
+            <label for="e-etat">État général</label>
+            <select id="e-etat" name="etat">
+              <option>Très bon : rien à prévoir</option><option>Bon : petits défauts d'usage</option><option>Moyen : des frais à prévoir</option><option>Accidenté ou en panne</option>
+            </select>
+          </div>
+          <div class="champ">
+            <label for="e-entretien">Carnet d'entretien</label>
+            <select id="e-entretien" name="entretien">
+              <option>Complet, avec factures</option><option>Partiel</option><option>Aucun justificatif</option>
+            </select>
+          </div>
+          <div class="champ champ--large">
+            <label for="e-details">Précisions utiles</label>
+            <textarea id="e-details" name="precisions" placeholder="Options, nombre de propriétaires, carrosserie refaite, frais récents (pneus, freins, distribution)…"></textarea>
+          </div>
+          <div class="champ">
+            <label for="e-prix">Prix souhaité (facultatif)</label>
+            <input id="e-prix" name="prix-souhaite" type="text" inputmode="numeric" placeholder="Ex. 18 000 €">
+          </div>
+          <div class="champ">
+            <label for="e-photos">Photos (facultatif)</label>
+            <input id="e-photos" name="photos" type="file" accept="image/*" multiple>
+          </div>
+
+          <p class="formulaire__titre">Vos coordonnées</p>
+          <div class="champ">
+            <label for="e-nom">Nom et prénom</label>
+            <input id="e-nom" name="nom" type="text" autocomplete="name" required>
+          </div>
+          <div class="champ">
+            <label for="e-tel">Téléphone</label>
+            <input id="e-tel" name="telephone" type="tel" autocomplete="tel" required>
+          </div>
+          <div class="champ">
+            <label for="e-email">E-mail</label>
+            <input id="e-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="champ">
+            <label for="e-ville">Ville</label>
+            <input id="e-ville" name="ville" type="text" autocomplete="address-level2">
+          </div>
+          <div class="formulaire__envoi">
+            <button class="bouton" type="submit">Recevoir mon estimation <span class="fleche" aria-hidden="true">→</span></button>
+            <p>Vos coordonnées servent uniquement à vous recontacter au sujet de cette estimation.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>

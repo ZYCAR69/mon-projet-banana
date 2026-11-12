@@ -340,3 +340,47 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
 .formulaire__titre--premier { margin-top: 0; padding-top: 0; border-top: 0; }
 .formules--compactes .formule { gap: 14px; padding: 24px; }
 .formules--compactes .formule__prix { font-size: 2.1rem; }
+
+/* Trois parcours sur l'accueil */
+.voies--trois { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 980px) { .voies--trois { grid-template-columns: minmax(0, 1fr); } }
+
+/* Voitures livrées */
+.livrees { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.livrees figure { margin: 0; position: relative; overflow: hidden; border-radius: 22px; border: 1px solid var(--bord); }
+.livrees img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .8s var(--fluide); }
+.livrees figure:hover img { transform: scale(1.05); }
+.livrees figcaption { position: absolute; inset: auto 0 0; padding: 40px 18px 14px; font-family: var(--titre); font-weight: 600; font-size: 1.05rem; background: linear-gradient(transparent, rgba(4, 6, 10, 0.88)); }
+@media (max-width: 900px) { .livrees { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+@media (max-width: 520px) { .livrees { grid-template-columns: minmax(0, 1fr); } }
+
+/* Blog */
+.cartes-blog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.carte-article { display: grid; gap: 14px; align-content: start; grid-template-rows: auto auto 1fr auto; text-decoration: none; }
+.carte-article p { color: var(--doux); }
+.carte-article__meta { font-size: 0.88rem; color: var(--cyan); font-weight: 500; }
+.carte-article__lien { font-family: var(--titre); font-weight: 600; display: inline-flex; gap: 8px; }
+.carte-article:hover .fleche { transform: translateX(5px); }
+.carte-article .fleche { transition: transform .35s var(--fluide); }
+@media (max-width: 980px) { .cartes-blog { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .cartes-blog { grid-template-columns: minmax(0, 1fr); } }
+.article { padding-block: clamp(40px, 6vw, 80px) clamp(56px, 8vw, 104px); }
+.article .cadre { max-width: 800px; display: grid; gap: 20px; }
+.article h1 { font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.1; }
+.article__fil a { color: var(--doux); text-decoration: none; font-size: 0.95rem; }
+.article__fil a:hover { color: var(--cyan); }
+.article__corps { display: grid; gap: 18px; margin-top: 16px; font-size: 1.1rem; line-height: 1.75; color: #c9d2db; }
+.article__corps h2 { font-size: 1.6rem; font-weight: 600; line-height: 1.2; color: var(--texte); margin-top: 18px; }
+.article__corps ul { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
+.article__corps li::marker { color: var(--cyan); }
+
+/* Boutons flottants WhatsApp et téléphone */
+.flottants { position: fixed; z-index: 35; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 12px; }
+.flottant { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; color: #fff; box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.8); transition: transform .35s var(--fluide); }
+.flottant:hover { transform: translateY(-3px) scale(1.06); }
+.flottant--wa { background: #1fa855; }
+.flottant--tel { background: var(--degrade); color: var(--encre); }
+@media (min-width: 901px) { .flottant--tel { display: none; } }
+.champ input[type="file"] { padding: 11px 12px; font-size: 0.92rem; }
+.pied { padding-bottom: 96px; }
+.voie .liste { align-content: start; }

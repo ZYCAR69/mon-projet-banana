@@ -7,8 +7,8 @@
 import pathlib, re, shutil, sys
 
 RACINE = pathlib.Path(__file__).parent
-MENU = [("index.html#stock", "En stock"), ("index.html#import", "Import"), ("index.html#formules", "Formules"),
-        ("a-propos.html", "À propos"), ("faq.html", "FAQ"), ("contact.html", "Contact")]
+MENU = [("vehicules.html", "Véhicules"), ("import.html", "Import"), ("vendre.html", "Vendre"),
+        ("blog.html", "Blog"), ("a-propos.html", "À propos"), ("contact.html", "Contact")]
 
 GABARIT = """<!DOCTYPE html>
 <html lang="fr">
@@ -52,9 +52,13 @@ GABARIT = """<!DOCTYPE html>
         <p class="pied__titre">Le site</p>
         <ul>
           <li><a href="index.html">Accueil</a></li>
+          <li><a href="vehicules.html">Nos véhicules</a></li>
+          <li><a href="import.html">Import sur mandat</a></li>
           <li><a href="recherche.html">Recherche personnalisée</a></li>
-          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="vendre.html">Vendre ma voiture</a></li>
+          <li><a href="blog.html">Blog</a></li>
           <li><a href="faq.html">Questions fréquentes</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
@@ -79,6 +83,15 @@ GABARIT = """<!DOCTYPE html>
   </div>
 </footer>
 
+<div class="flottants">
+  <a class="flottant flottant--wa" href="https://wa.me/33783198821" target="_blank" rel="noopener" aria-label="Écrire à ZYCAR sur WhatsApp">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.600 15.100L2 22l5-1.300A10 10 0 1 0 12 2zm0 1.800a8.200 8.200 0 1 1-4.300 15.200l-.400-.200-2.800.700.800-2.700-.300-.400A8.200 8.200 0 0 1 12 3.800zM8.600 7.300c-.200 0-.500.100-.700.400-.300.300-1 1-1 2.300s1 2.700 1.100 2.900c.200.200 2 3.100 4.900 4.200 2.400.900 2.900.700 3.400.700.500-.100 1.600-.700 1.800-1.300.300-.600.300-1.200.200-1.300l-.500-.300-1.700-.800c-.200-.100-.400-.100-.600.100l-.800 1c-.100.200-.300.200-.500.100-.300-.100-1.100-.400-2-1.300-.800-.700-1.300-1.500-1.400-1.800-.100-.200 0-.400.100-.500l.400-.400.200-.400v-.400l-.800-1.900c-.200-.400-.400-.400-.500-.400z"/></svg>
+  </a>
+  <a class="flottant flottant--tel" href="tel:+33783198821" aria-label="Appeler ZYCAR">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+  </a>
+</div>
+
 <script src="assets/site.js"></script>{extra}
 </body>
 </html>
@@ -89,9 +102,7 @@ APERCU = """
 document.querySelectorAll("form").forEach(function (f) {
   f.addEventListener("submit", function (e) {
     e.preventDefault();
-    var m = f.querySelector(".formulaire__etat");
-    if (!m) { m = document.createElement("p"); m.className = "formulaire__etat"; f.appendChild(m); }
-    m.textContent = "Maquette : l'envoi n'est pas encore branché. Sur le site en ligne, cette demande arrivera sur contact@zycar.fr.";
+    location.href = "merci.html";
   });
 });
 </script>"""
@@ -109,7 +120,7 @@ def construire(sortie, apercu=False):
         menu = "\n".join(
             '        <a href="{}"{}>{}</a>'.format(
                 lien.replace("index.html", "") if page.name == "index.html" and "#" in lien else lien,
-                ' aria-current="page"' if lien == page.name else "", nom)
+                ' aria-current="page"' if lien == page.name or (lien == "blog.html" and page.name.startswith("blog-")) else "", nom)
             for lien, nom in MENU)
         html = GABARIT.format(titre=titre, description=description, menu=menu, contenu=contenu,
                               extra=APERCU if apercu else "")
