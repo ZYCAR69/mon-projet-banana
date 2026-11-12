@@ -415,12 +415,14 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
 @keyframes etape { from { opacity: 0; transform: translateX(18px); } }
 @media (max-width: 560px) { .etape-form { grid-template-columns: minmax(0, 1fr); } }
 
-/* Un univers, une couleur : achat (cyan, par défaut), import (violet), vente (vert) */
-[data-univers="import"] { --a: 150, 140, 255; --b: 190, 110, 255; --cyan: #a59bff; --bleu: #c06bff; --halo-1: #3b2a9c; --halo-2: #6a1fb8; --degrade: linear-gradient(100deg, #cfc9ff 0%, #a59bff 40%, #c06bff 100%); }
-[data-univers="vente"] { --a: 52, 217, 165; --b: 18, 170, 190; --cyan: #34d9a5; --bleu: #12aabe; --halo-1: #0b6b55; --halo-2: #0a5a78; --degrade: linear-gradient(100deg, #a8f5d8 0%, #34d9a5 45%, #12aabe 100%); }
+/* Un univers, une teinte : achat (bleu, par défaut), import (blanc), vente (argent) */
+[data-univers="import"] { --a: 255, 255, 255; --b: 200, 212, 224; --cyan: #ffffff; --bleu: #dfe6ed; --halo-1: #3a4654; --halo-2: #232c38; --degrade: linear-gradient(100deg, #ffffff 0%, #ffffff 55%, #e3e9ef 100%); }
+[data-univers="vente"] { --a: 176, 189, 202; --b: 120, 134, 148; --cyan: #b9c5d0; --bleu: #8493a2; --halo-1: #2f3944; --halo-2: #1d242d; --degrade: linear-gradient(100deg, #eef2f5 0%, #aab6c2 45%, #7f8d9b 75%, #c9d2da 100%); }
 .univers { display: inline-flex; align-items: center; gap: 10px; width: fit-content; font-family: var(--titre); font-weight: 600; font-size: 0.88rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); }
 .univers b { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--degrade); color: var(--encre); font-size: 0.95rem; letter-spacing: 0; }
 .voie__pour { color: var(--texte) !important; font-weight: 500; font-size: 1.05rem; }
 .voies--trois .voie { grid-template-rows: auto auto auto auto 1fr auto; border-color: rgba(var(--a), 0.3); background: linear-gradient(170deg, rgba(var(--a), 0.13), var(--verre) 55%); }
 .ouverture__actions .bouton[data-univers] { box-shadow: 0 10px 34px -12px rgba(var(--a), 0.8); }
 .pied__grille > div { min-width: 0; }
+
+.livrees figure::before { content: "Vendue"; position: absolute; z-index: 1; top: 12px; left: 12px; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; background: rgba(4, 6, 10, 0.72); border: 1px solid var(--bord); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }

@@ -1,5 +1,17 @@
 (function () {
   var racine = document.documentElement;
+
+  /* Une nouvelle page s'ouvre toujours en haut (sauf lien vers une section précise) */
+  if (!location.hash) {
+    try { history.scrollRestoration = "manual"; } catch (e) {}
+    var enHaut = function () {
+      window.scrollTo(0, 0);
+      var tete = document.querySelector(".entete");
+      if (tete && tete.scrollIntoView) tete.scrollIntoView({ block: "start", behavior: "instant" });
+    };
+    enHaut();
+    window.addEventListener("pageshow", enHaut);
+  }
   var calme = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* Menu mobile */
