@@ -1,0 +1,63 @@
+<!-- titre: Contacter ZYCAR -->
+<!-- description: Contactez ZYCAR à Saint-Georges-de-Reneins (69) par téléphone au 07 83 19 88 21, par e-mail ou avec le formulaire. -->
+
+  <section class="page-tete">
+    <div class="halos" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="cadre">
+      <p class="pastille r">Contact</p>
+      <h1 class="r" style="--d:.08s">Parlons de <span class="degrade">votre projet.</span></h1>
+      <p class="chapeau r" style="--d:.16s">Par téléphone, par e-mail ou avec le formulaire : nous répondons à toutes vos questions, sous 24 heures.</p>
+    </div>
+  </section>
+
+  <section class="section section--serree">
+    <div class="cadre">
+      <div class="demande">
+        <div class="demande__intro">
+          <ul class="coordonnees r">
+            <li><i aria-hidden="true">☎</i><div><small>Téléphone</small><a href="tel:+33783198821">07 83 19 88 21</a></div></li>
+            <li><i aria-hidden="true">@</i><div><small>E-mail</small><a href="mailto:contact@zycar.fr">contact@zycar.fr</a></div></li>
+            <li><i aria-hidden="true">⌖</i><div><small>Local</small><a href="https://www.google.com/maps/search/?api=1&amp;query=Saint-Georges-de-Reneins+69830" target="_blank" rel="noopener">Saint-Georges-de-Reneins (69)</a></div></li>
+          </ul>
+          <div class="carte r" style="--d:.1s;display:grid;gap:12px">
+            <h3>Vous cherchez un véhicule précis ?</h3>
+            <p style="color:var(--doux)">Le formulaire de recherche personnalisée nous donne tout ce qu'il faut pour vous répondre vite.</p>
+            <p><a class="bouton bouton--verre" href="recherche.html">Recherche personnalisée <span class="fleche" aria-hidden="true">→</span></a></p>
+          </div>
+        </div>
+
+        <form class="carte formulaire r" name="contact" method="POST" data-netlify="true" netlify-honeypot="site-web">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="piege"><label>Ne pas remplir : <input name="site-web" tabindex="-1" autocomplete="off"></label></p>
+          <fieldset class="champ champ--large">
+            <legend>Votre message concerne</legend>
+            <div class="choix">
+              <label><input id="c-sujet-1" type="radio" name="sujet" value="Véhicule en stock" checked><span>Un véhicule en stock</span></label>
+              <label><input id="c-sujet-2" type="radio" name="sujet" value="Import sur mandat"><span>L'import sur mandat</span></label>
+              <label><input id="c-sujet-3" type="radio" name="sujet" value="Autre question"><span>Autre question</span></label>
+            </div>
+          </fieldset>
+          <div class="champ">
+            <label for="c-nom">Nom et prénom</label>
+            <input id="c-nom" name="nom" type="text" autocomplete="name" required>
+          </div>
+          <div class="champ">
+            <label for="c-tel">Téléphone</label>
+            <input id="c-tel" name="telephone" type="tel" autocomplete="tel" required>
+          </div>
+          <div class="champ champ--large">
+            <label for="c-email">E-mail</label>
+            <input id="c-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="champ champ--large">
+            <label for="c-message">Votre message</label>
+            <textarea id="c-message" name="message" required></textarea>
+          </div>
+          <div class="formulaire__envoi">
+            <button class="bouton" type="submit">Envoyer <span class="fleche" aria-hidden="true">→</span></button>
+            <p>Vos coordonnées servent uniquement à vous répondre.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
