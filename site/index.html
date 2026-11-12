@@ -147,15 +147,16 @@ h3 { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.015em; line-height:
 @media (max-width: 940px) { .ouverture__grille { grid-template-columns: minmax(0, 1fr); } }
 
 /* Silhouette qui se dessine */
-.scene { position: relative; min-width: 0; padding-block: 64px 56px; }
-.scene svg { width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 0 18px rgba(37, 197, 240, 0.45)); }
-.trait { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
-.anim .trait { animation: dessin 2.4s var(--fluide) both; animation-delay: var(--d, 0s); }
-@keyframes dessin { from { stroke-dashoffset: 1; opacity: 0; } 15% { opacity: 1; } to { stroke-dashoffset: 0; } }
-.route { stroke-dasharray: 46 34; animation: route 1.1s linear infinite; }
-@keyframes route { to { stroke-dashoffset: -80; } }
-.roue { transform-box: fill-box; transform-origin: center; animation: tourne 1.6s linear infinite; }
-@keyframes tourne { to { transform: rotate(360deg); } }
+.scene { position: relative; min-width: 0; padding-block: 72px 60px; }
+.auto { position: relative; }
+.auto__img { position: relative; width: 100%; height: auto; filter: drop-shadow(0 24px 30px rgba(0, 0, 0, 0.7)); }
+.anim .auto__img { animation: arrivee 1.6s var(--fluide) both; }
+@keyframes arrivee { from { transform: translateX(22%); opacity: 0; filter: blur(8px); } }
+.auto__halo { position: absolute; inset: 8% 4% -6%; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 197, 240, 0.4), rgba(44, 107, 255, 0.18) 55%, transparent); filter: blur(34px); animation: pouls 5s ease-in-out infinite alternate; }
+@keyframes pouls { to { opacity: 0.55; transform: scale(1.06); } }
+.auto__sol { position: absolute; left: 3%; right: 3%; bottom: -1.5%; height: 9%; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, 0.9), transparent); }
+.auto__route { display: block; height: 3px; margin-top: 26px; border-radius: 3px; background: repeating-linear-gradient(90deg, rgba(37, 197, 240, 0.6) 0 46px, transparent 46px 80px); animation: route 1.1s linear infinite; }
+@keyframes route { to { background-position: -80px 0; } }
 .bulle {
   position: absolute; display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 16px;
   background: rgba(10, 16, 24, 0.72); border: 1px solid var(--bord); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -339,22 +340,12 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
         </div>
 
         <div class="scene" aria-hidden="true">
-          <svg viewBox="0 20 800 330" role="presentation">
-            <defs>
-              <linearGradient id="g-cyan" x1="0" x2="1"><stop offset="0" stop-color="#5fe0ff"/><stop offset="1" stop-color="#2c6bff"/></linearGradient>
-              <linearGradient id="g-argent" x1="0" x2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#8794a1"/></linearGradient>
-            </defs>
-            <path class="trait" pathLength="1" stroke="url(#g-argent)" stroke-width="5" d="M34 270 C 28 240, 32 200, 52 184 C 110 166, 180 150, 262 138 C 300 100, 340 62, 392 54 C 470 46, 560 48, 640 60 L 664 62 C 700 98, 728 128, 742 150 C 760 160, 770 190, 770 220 L 766 256 L 756 270 L 691.5 270 A 64 64 0 1 0 574.5 270 L 239.5 270 A 64 64 0 1 0 122.500 270 Z"/>
-            <path class="trait" pathLength="1" style="--d:.35s" stroke="url(#g-cyan)" stroke-width="4" d="M284 134 C 312 104, 346 76, 392 69 C 460 62, 560 62, 632 73 C 662 94, 688 118, 700 134 Z"/>
-            <path class="trait" pathLength="1" style="--d:.5s" stroke="url(#g-cyan)" stroke-width="3" d="M452 65 L 452 134 M 598 68 L 612 134"/>
-            <path class="trait" pathLength="1" style="--d:.6s" stroke="url(#g-argent)" stroke-width="2.500" stroke-opacity=".7" d="M300 138 C 296 190, 300 240, 306 270 M 452 136 L 452 270 M 612 136 C 602 168, 584 192, 568 212 M 250 176 C 400 166, 600 162, 742 170"/>
-            <path class="trait" pathLength="1" style="--d:.7s" stroke="url(#g-argent)" stroke-width="3" d="M404 160 h 28 M 552 158 h 28 M 294 130 l -24 -2 l 2 12 h 20 Z"/>
-            <path class="trait" pathLength="1" style="--d:.8s" stroke="url(#g-cyan)" stroke-width="4" d="M54 190 L 112 176 L 106 196 L 58 204 Z M 744 154 L 766 174 L 764 192 L 746 178 Z"/>
-            <circle class="trait" pathLength="1" style="--d:0.9s" cx="181" cy="244" r="54" stroke="url(#g-argent)" stroke-width="5"/><g class="roue"><circle cx="181" cy="244" r="39" fill="none" stroke="#25c5f0" stroke-opacity=".7" stroke-width="2.500"/><path fill="none" stroke="#25c5f0" stroke-width="4" stroke-linecap="round" d="M181 244 L181.0 206.0 M181 244 L217.1 232.3 M181 244 L203.3 274.7 M181 244 L158.7 274.7 M181 244 L144.9 232.3"/><circle cx="181" cy="244" r="7" fill="#25c5f0"/></g>
-            <circle class="trait" pathLength="1" style="--d:1s" cx="633" cy="244" r="54" stroke="url(#g-argent)" stroke-width="5"/><g class="roue"><circle cx="633" cy="244" r="39" fill="none" stroke="#25c5f0" stroke-opacity=".7" stroke-width="2.500"/><path fill="none" stroke="#25c5f0" stroke-width="4" stroke-linecap="round" d="M633 244 L633.0 206.0 M633 244 L669.1 232.3 M633 244 L655.3 274.7 M633 244 L610.7 274.7 M633 244 L596.9 232.3"/><circle cx="633" cy="244" r="7" fill="#25c5f0"/></g>
-            <path class="route" fill="none" stroke="#25c5f0" stroke-opacity=".55" stroke-width="3" stroke-linecap="round" d="M0 328 H800"/>
-            <path fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="2" d="M0 301 H800"/>
-          </svg>
+          <div class="auto">
+            <span class="auto__halo"></span>
+            <img class="auto__img" src="assets/voiture.webp" alt="" width="1268" height="392">
+            <span class="auto__sol"></span>
+            <span class="auto__route"></span>
+          </div>
           <span class="bulle bulle--1"><b>✓</b>Expertise sur place</span>
           <span class="bulle bulle--2"><b>✓</b>Rapport vidéo</span>
           <span class="bulle bulle--3"><b>✓</b>Immatriculation gérée</span>
