@@ -384,3 +384,29 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
 .champ input[type="file"] { padding: 11px 12px; font-size: 0.92rem; }
 .pied { padding-bottom: 96px; }
 .voie .liste { align-content: start; }
+
+/* Page Vendre */
+.voie__sur { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan) !important; }
+.trio__num { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--degrade); color: var(--encre); font-family: var(--titre); font-weight: 700; font-size: 1.2rem; }
+.tableau-cadre { overflow-x: auto; border: 1px solid var(--bord); border-radius: var(--rayon); background: var(--verre); }
+.comparatif { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 0.98rem; }
+.comparatif th, .comparatif td { padding: 18px 20px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--bord); }
+.comparatif tbody tr:last-child th, .comparatif tbody tr:last-child td { border-bottom: 0; }
+.comparatif thead th { font-family: var(--titre); font-weight: 600; font-size: 1.05rem; }
+.comparatif tbody th { font-weight: 500; color: var(--doux); white-space: nowrap; }
+.comparatif td { color: var(--doux); }
+.comparatif .phare { background: rgba(37, 197, 240, 0.09); color: var(--texte); }
+.comparatif thead .phare { color: var(--cyan); }
+.avis__google { margin-top: 28px; }
+.progression { grid-column: 1 / -1; list-style: none; margin: 0 0 6px; padding: 0; display: none; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 0.88rem; color: var(--doux); }
+.progression li { padding-top: 10px; border-top: 3px solid var(--bord); transition: border-color .4s, color .4s; }
+.progression li.actif { border-color: var(--cyan); color: var(--texte); }
+.etape-form { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.etape-nav { display: none; }
+.pas-a-pas .progression { display: grid; }
+.pas-a-pas .etape-form { display: none; }
+.pas-a-pas .etape-form.visible { display: grid; animation: etape .5s var(--fluide); }
+.pas-a-pas .etape-nav { display: flex; }
+.pas-a-pas button.etape-nav { display: inline-flex; }
+@keyframes etape { from { opacity: 0; transform: translateX(18px); } }
+@media (max-width: 560px) { .etape-form { grid-template-columns: minmax(0, 1fr); } }

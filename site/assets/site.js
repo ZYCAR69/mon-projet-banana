@@ -12,6 +12,39 @@
     if (e.target.tagName === "A") { nav.classList.remove("ouvert"); btn.setAttribute("aria-expanded", "false"); }
   });
 
+  /* Boutons qui présélectionnent rachat ou dépôt-vente dans le formulaire d'estimation */
+  document.querySelectorAll("[data-solution]").forEach(function (lien) {
+    lien.addEventListener("click", function () {
+      var radio = document.querySelector('input[name="solution"][value="' + lien.dataset.solution + '"]');
+      if (radio) radio.checked = true;
+    });
+  });
+
+  /* Formulaire d'estimation en trois étapes */
+  var formE = document.getElementById("form-estimation");
+  if (formE) {
+    var etapesF = formE.querySelectorAll(".etape-form"), points = formE.querySelectorAll(".progression li"), courante = 0;
+    var montrer = function (i) {
+      courante = i;
+      etapesF.forEach(function (e, k) { e.classList.toggle("visible", k === i); });
+      points.forEach(function (pt, k) { pt.classList.toggle("actif", k <= i); });
+    };
+    var valide = function () {
+      var champs = etapesF[courante].querySelectorAll("input, select, textarea");
+      for (var k = 0; k < champs.length; k++) { if (!champs[k].reportValidity()) return false; }
+      return true;
+    };
+    formE.classList.add("pas-a-pas");
+    montrer(0);
+    formE.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-suiv], [data-prec]");
+      if (!b) return;
+      if (b.hasAttribute("data-suiv")) { if (valide()) montrer(courante + 1); }
+      else montrer(courante - 1);
+      formE.scrollIntoView({ block: "nearest" });
+    });
+  }
+
   /* Halo qui suit la souris sur les cartes */
   document.querySelectorAll(".carte").forEach(function (c) {
     c.addEventListener("pointermove", function (e) {
