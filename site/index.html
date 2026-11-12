@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZYCAR Accueil</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="ZYCAR, à Saint-Georges-de-Reneins (69) : véhicules d'occasion en stock et import sur mandat depuis l'Allemagne, contrôlés, immatriculés et livrés.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Mise en page : fond noir du logo, grands titres en capitales façon signalétique
+   allemande (DIN), une seule couleur d'accent (le cyan du logo), bandes pleine largeur. */
+:root {
+  color-scheme: dark;
+  --noir: #000000;
+  --carbone: #0b0e11;
+  --acier: #151a1f;
+  --filet: #262d34;
+  --argent: #eef1f3;
+  --gris: #9aa5ae;
+  --cyan: #1cb8e3;
+  --cyan-fonce: #0b7fa3;
+  --plaque: #f4f5f2;
+  --plaque-bleu: #1a3f9c;
+  --plaque-texte: #111315;
+  --titre: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --texte: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --large: 1160px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--noir);
+  color: var(--argent);
+  font-family: var(--texte);
+  font-size: 17px;
+  line-height: 1.6;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--noir);
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+.cadre {
+  max-width: var(--large);
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.bande { padding-block: clamp(56px, 8vw, 104px); }
+.bande--carbone { background: var(--carbone); }
+
+h1, h2, h3 {
+  font-family: var(--titre);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.9rem, 8vw, 5.6rem); font-weight: 700; }
+h2 { font-size: clamp(2.1rem, 5vw, 3.4rem); font-weight: 700; }
+h3 { font-size: 1.55rem; font-weight: 600; }
+p { margin: 0; }
+.accent { color: var(--cyan); }
+.sur-titre {
+  font-family: var(--titre);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.chapeau { color: var(--gris); max-width: 62ch; font-size: 1.1rem; }
+.entete-section { display: grid; gap: 14px; margin-bottom: clamp(32px, 5vw, 56px); }
+
+.bouton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 12px 26px;
+  font-family: var(--titre); font-weight: 600; font-size: 1.15rem;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  border: 2px solid var(--cyan); border-radius: 2px;
+  background: var(--cyan); color: var(--noir);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.bouton:hover { background: var(--argent); border-color: var(--argent); }
+.bouton--contour { background: transparent; color: var(--argent); border-color: var(--filet); }
+.bouton--contour:hover { background: transparent; color: var(--cyan); border-color: var(--cyan); }
+
+/* En-tête */
+.entete {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--noir); border-bottom: 1px solid var(--filet);
+}
+.entete .cadre { display: flex; align-items: center; gap: 24px; min-height: 68px; }
+.entete__logo img { height: 46px; width: auto; }
+.nav { display: flex; gap: 28px; margin-left: auto; }
+.nav a {
+  font-family: var(--titre); font-weight: 500; font-size: 1.1rem;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--gris);
+}
+.nav a:hover { color: var(--argent); }
+.entete__tel {
+  font-family: var(--titre); font-weight: 600; font-size: 1.15rem; letter-spacing: 0.06em;
+  text-decoration: none; white-space: nowrap;
+  padding: 8px 16px; border: 1px solid var(--cyan); border-radius: 2px; color: var(--cyan);
+}
+.entete__tel:hover { background: var(--cyan); color: var(--noir); }
+@media (max-width: 900px) {
+  .nav { display: none; }
+  .entete__tel { margin-left: auto; }
+}
+
+/* Ouverture */
+.ouverture { padding-block: clamp(48px, 7vw, 96px) clamp(40px, 6vw, 72px); }
+.ouverture__grille {
+  display: grid; gap: clamp(32px, 5vw, 64px);
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center;
+}
+.ouverture__texte { display: grid; gap: 22px; min-width: 0; }
+.ouverture__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }
+@media (max-width: 900px) { .ouverture__grille { grid-template-columns: minmax(0, 1fr); } }
+
+/* Plaques : le trajet d'une voiture importée, de l'immatriculation allemande à la française */
+.trajet { display: grid; gap: 18px; justify-items: start; min-width: 0; }
+.plaque {
+  display: flex; align-items: stretch; max-width: 100%;
+  background: var(--plaque); color: var(--plaque-texte);
+  border-radius: 6px; border: 2px solid var(--plaque-texte);
+  font-family: var(--titre); font-weight: 700; line-height: 1;
+  font-size: clamp(2.1rem, 5.2vw, 3.3rem); letter-spacing: 0.06em;
+  box-shadow: 0 18px 40px -18px var(--cyan-fonce);
+}
+.plaque__pays {
+  display: grid; place-items: end center; padding: 8px 9px;
+  background: var(--plaque-bleu); color: var(--plaque);
+  font-size: 0.42em; letter-spacing: 0;
+}
+.plaque__pays:first-child { border-radius: 3px 0 0 3px; }
+.plaque__pays:last-child { border-radius: 0 3px 3px 0; }
+.plaque__numero { padding: 12px 18px; white-space: nowrap; }
+.plaque--fr { margin-left: clamp(0px, 6vw, 72px); }
+.trajet__etape {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--titre); font-weight: 500; font-size: 1.05rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris);
+}
+.trajet__etape::before { content: ""; width: 44px; height: 2px; background: var(--cyan); }
+.trajet__etape--fr { margin-left: clamp(0px, 6vw, 72px); }
+
+.reperes {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: clamp(40px, 6vw, 72px); border-top: 1px solid var(--filet);
+}
+.repere { padding: 22px 20px 0 0; display: grid; gap: 4px; align-content: start; }
+.repere + .repere { padding-left: 20px; border-left: 1px solid var(--filet); }
+.repere__valeur { font-family: var(--titre); font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1; }
+.repere__libelle { color: var(--gris); font-size: 0.98rem; }
+@media (max-width: 640px) {
+  .reperes { grid-template-columns: minmax(0, 1fr); }
+  .repere, .repere + .repere { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--filet); }
+}
+
+/* Deux façons d'acheter */
+.voies { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; background: var(--filet); border: 1px solid var(--filet); }
+.voie { background: var(--carbone); padding: clamp(26px, 4vw, 44px); display: grid; gap: 18px; align-content: start; min-width: 0; }
+.voie p { color: var(--gris); }
+.voie ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.voie li { padding-left: 22px; position: relative; }
+.voie li::before { content: ""; position: absolute; left: 0; top: 0.68em; width: 10px; height: 2px; background: var(--cyan); }
+.voie .bouton { justify-self: start; margin-top: 6px; }
+@media (max-width: 780px) { .voies { grid-template-columns: minmax(0, 1fr); } }
+
+/* Pourquoi l'Allemagne */
+.raisons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 4vw, 48px); }
+.raison { display: grid; gap: 12px; align-content: start; padding-top: 20px; border-top: 2px solid var(--cyan); min-width: 0; }
+.raison p { color: var(--gris); }
+@media (max-width: 780px) { .raisons { grid-template-columns: minmax(0, 1fr); } }
+
+/* Étapes */
+.etapes { list-style: none; margin: 0; padding: 0; counter-reset: etape; display: grid; }
+.etape {
+  counter-increment: etape;
+  display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 8px 24px;
+  padding-block: 26px; border-top: 1px solid var(--filet);
+}
+.etape:last-child { border-bottom: 1px solid var(--filet); }
+.etape::before {
+  content: counter(etape, decimal-leading-zero);
+  font-family: var(--titre); font-weight: 700; font-size: 3rem; line-height: 0.9; color: var(--cyan);
+  grid-row: span 2;
+}
+.etape p { color: var(--gris); max-width: 68ch; }
+@media (max-width: 560px) {
+  .etape { grid-template-columns: 54px minmax(0, 1fr); gap: 8px 14px; }
+  .etape::before { font-size: 2.2rem; }
+}
+
+/* Formules */
+.formules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+.formule {
+  display: grid; grid-template-rows: auto auto 1fr auto; gap: 20px;
+  background: var(--acier); border: 1px solid var(--filet); padding: 30px 26px; min-width: 0;
+}
+.formule--phare { border-color: var(--cyan); }
+.formule__nom { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; justify-content: space-between; }
+.formule__badge {
+  font-family: var(--titre); font-weight: 600; font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase;
+  background: var(--cyan); color: var(--noir); padding: 3px 10px;
+}
+.formule__prix { font-family: var(--titre); font-weight: 700; font-size: 3.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.formule__prix small { display: block; font-family: var(--texte); font-weight: 400; font-size: 0.95rem; color: var(--gris); margin-bottom: 6px; letter-spacing: 0; text-transform: none; }
+.formule ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 11px; align-content: start; font-size: 0.98rem; }
+.formule li { padding-left: 26px; position: relative; }
+.formule li::before { content: "✓"; position: absolute; left: 0; color: var(--cyan); font-weight: 600; }
+.formule li.non { color: var(--gris); opacity: 0.6; text-decoration: line-through; }
+.formule li.non::before { content: "–"; color: var(--gris); }
+.formules__note { margin-top: 24px; color: var(--gris); font-size: 0.98rem; max-width: 80ch; }
+@media (max-width: 900px) { .formules { grid-template-columns: minmax(0, 1fr); } }
+
+/* Avis */
+.avis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 4vw, 44px); }
+.avis blockquote { margin: 0; display: grid; gap: 18px; align-content: start; min-width: 0; }
+.avis blockquote p { font-size: 1.05rem; }
+.avis blockquote p::before { content: "« "; color: var(--cyan); }
+.avis blockquote p::after { content: " »"; color: var(--cyan); }
+.avis footer { font-family: var(--titre); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); }
+.avis footer span { color: var(--argent); }
+@media (max-width: 900px) { .avis { grid-template-columns: minmax(0, 1fr); } }
+
+.parrainage {
+  margin-top: clamp(40px, 6vw, 72px); padding: clamp(24px, 4vw, 40px);
+  border: 1px solid var(--filet); background: var(--acier);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 16px 40px;
+}
+.parrainage__montant { font-family: var(--titre); font-weight: 700; font-size: clamp(3.4rem, 8vw, 5rem); line-height: 0.9; color: var(--cyan); }
+.parrainage__texte { flex: 1 1 320px; display: grid; gap: 8px; min-width: 0; }
+.parrainage__texte p { color: var(--gris); }
+
+/* Demande */
+.demande { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 80px); align-items: start; }
+.demande__intro { display: grid; gap: 18px; min-width: 0; }
+.coordonnees { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+.coordonnees li { display: grid; gap: 2px; }
+.coordonnees .etiquette { font-family: var(--titre); font-weight: 500; font-size: 0.95rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris); }
+.coordonnees a, .coordonnees span.valeur { font-size: 1.2rem; font-weight: 500; text-decoration: none; overflow-wrap: anywhere; }
+.coordonnees a:hover { color: var(--cyan); }
+.formulaire { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; min-width: 0; }
+.champ { display: grid; gap: 6px; min-width: 0; }
+.champ--large { grid-column: 1 / -1; }
+.champ label { font-family: var(--titre); font-weight: 500; font-size: 0.98rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); }
+.champ input, .champ select, .champ textarea {
+  width: 100%; min-height: 50px; padding: 12px 14px;
+  font: inherit; color: var(--argent);
+  background: var(--acier); border: 1px solid var(--filet); border-radius: 2px;
+}
+.champ textarea { min-height: 120px; resize: vertical; }
+.champ input:focus, .champ select:focus, .champ textarea:focus { outline: none; border-color: var(--cyan); }
+.champ input::placeholder, .champ textarea::placeholder { color: var(--gris); opacity: 0.7; }
+.piege { position: absolute; left: -9999px; }
+.formulaire__envoi { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.formulaire__envoi p { color: var(--gris); font-size: 0.95rem; flex: 1 1 240px; }
+.formulaire__etat { grid-column: 1 / -1; padding: 14px 16px; border: 1px solid var(--cyan); color: var(--argent); }
+@media (max-width: 900px) { .demande { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .formulaire { grid-template-columns: minmax(0, 1fr); } }
+
+/* Pied de page */
+.pied { border-top: 1px solid var(--filet); padding-block: 44px 32px; color: var(--gris); font-size: 0.98rem; }
+.pied__grille { display: flex; flex-wrap: wrap; gap: 28px 64px; align-items: start; justify-content: space-between; }
+.pied img { height: 54px; width: auto; }
+.pied ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.pied a { text-decoration: none; }
+.pied a:hover { color: var(--cyan); }
+.pied__titre { font-family: var(--titre); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--argent); margin-bottom: 10px; }
+.pied__bas { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--filet); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .bouton { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="entete">
+  <div class="cadre">
+    <a class="entete__logo" href="#accueil" aria-label="ZYCAR, retour en haut de page">
+      <img src="assets/logo-zycar.webp" alt="ZYCAR" width="720" height="232">
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#stock">En stock</a>
+      <a href="#import">Import</a>
+      <a href="#formules">Formules</a>
+      <a href="#avis">Avis</a>
+      <a href="#demande">Contact</a>
+    </nav>
+    <a class="entete__tel" href="tel:+33783198821">07 83 19 88 21</a>
+  </div>
+</header>
+
+<main id="accueil">
+
+  <section class="ouverture">
+    <div class="cadre">
+      <div class="ouverture__grille">
+        <div class="ouverture__texte">
+          <p class="sur-titre">Saint-Georges-de-Reneins · Rhône</p>
+          <h1>En stock, ou importée d'Allemagne <span class="accent">pour vous</span>.</h1>
+          <p class="chapeau">ZYCAR vend des véhicules d'occasion contrôlés, visibles dans notre local, et recherche en Allemagne le modèle précis que vous voulez. Dans les deux cas, la voiture vous est remise immatriculée en France.</p>
+          <div class="ouverture__actions">
+            <a class="bouton" href="#demande">Je recherche un véhicule</a>
+            <a class="bouton bouton--contour" href="https://www.leboncoin.fr/boutique/6770880/zycar.htm" target="_blank" rel="noopener">Voir le stock</a>
+          </div>
+        </div>
+
+        <div class="trajet" aria-label="D'une immatriculation allemande à une immatriculation française">
+          <p class="trajet__etape">Achetée en Allemagne</p>
+          <div class="plaque" aria-hidden="true">
+            <span class="plaque__pays">D</span>
+            <span class="plaque__numero">ZY CAR 69</span>
+          </div>
+          <p class="trajet__etape trajet__etape--fr">Livrée immatriculée en France</p>
+          <div class="plaque plaque--fr" aria-hidden="true">
+            <span class="plaque__pays">F</span>
+            <span class="plaque__numero">ZY-069-CR</span>
+            <span class="plaque__pays">69</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reperes">
+        <div class="repere">
+          <span class="repere__valeur">24 h</span>
+          <span class="repere__libelle">pour répondre à votre demande de recherche</span>
+        </div>
+        <div class="repere">
+          <span class="repere__valeur">10 jours</span>
+          <span class="repere__libelle">de délai de livraison après l'achat du véhicule</span>
+        </div>
+        <div class="repere">
+          <span class="repere__valeur">1 139 €</span>
+          <span class="repere__libelle">la formule Guide, à prix fixe</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande bande--carbone" id="stock">
+    <div class="cadre">
+      <div class="entete-section">
+        <p class="sur-titre">Deux façons d'acheter</p>
+        <h2>Choisissez votre voiture, ou faites-la chercher</h2>
+      </div>
+      <div class="voies">
+        <article class="voie">
+          <h3>Véhicules en stock</h3>
+          <p>Des voitures déjà importées, contrôlées et immatriculées, à voir et essayer à Saint-Georges-de-Reneins.</p>
+          <ul>
+            <li>Disponibles tout de suite</li>
+            <li>Historique et kilométrage certifiés</li>
+            <li>Essai sur rendez-vous</li>
+          </ul>
+          <a class="bouton bouton--contour" href="https://www.leboncoin.fr/boutique/6770880/zycar.htm" target="_blank" rel="noopener">Nos annonces Leboncoin</a>
+        </article>
+        <article class="voie" id="import">
+          <h3>Import sur mandat</h3>
+          <p>Vous décrivez la voiture que vous voulez. Nous la trouvons en Allemagne, la faisons expertiser et nous occupons de tout jusqu'à la remise des clés.</p>
+          <ul>
+            <li>Vous achetez directement au concessionnaire allemand, sans marge cachée</li>
+            <li>Rapport détaillé et vidéo avant tout paiement</li>
+            <li>Démarches et immatriculation gérées pour vous</li>
+          </ul>
+          <a class="bouton" href="#demande">Lancer ma recherche</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande">
+    <div class="cadre">
+      <div class="entete-section">
+        <p class="sur-titre">Pourquoi l'Allemagne</p>
+        <h2>Plus de choix, mieux suivies, souvent moins chères</h2>
+      </div>
+      <div class="raisons">
+        <article class="raison">
+          <h3>Jusqu'à 30 % d'économie</h3>
+          <p>À modèle et équipement égaux, les prix allemands sont souvent nettement plus bas qu'en France. Nous négocions en plus les remises et les options avec le vendeur.</p>
+        </article>
+        <article class="raison">
+          <h3>Un marché bien plus large</h3>
+          <p>Le parc automobile allemand est le plus grand d'Europe. On y trouve des finitions, des motorisations et des options rares ou introuvables en France.</p>
+        </article>
+        <article class="raison">
+          <h3>Des voitures bien entretenues</h3>
+          <p>Le contrôle technique existe en Allemagne depuis 40 ans de plus qu'en France, et les carnets d'entretien y sont suivis avec rigueur.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande bande--carbone">
+    <div class="cadre">
+      <div class="entete-section">
+        <p class="sur-titre">L'import, étape par étape</p>
+        <h2>De votre demande à la remise des clés</h2>
+      </div>
+      <ol class="etapes">
+        <li class="etape">
+          <h3>Vous décrivez votre voiture</h3>
+          <p>Modèle, budget, kilométrage, options : remplissez le formulaire ou appelez-nous. Vous avez une réponse sous 24 heures.</p>
+        </li>
+        <li class="etape">
+          <h3>Nous l'expertisons sur place</h3>
+          <p>Notre expert en Allemagne essaie le véhicule et vous envoie un rapport complet : historique d'entretien, anciens propriétaires, état intérieur et extérieur, pneus et freins, garanties, rapport carVertical.</p>
+        </li>
+        <li class="etape">
+          <h3>Vous validez et vous réglez</h3>
+          <p>Vous choisissez votre formule. Le paiement se fait par virement sécurisé, directement à la concession allemande. Prévoyez une pièce d'identité, votre permis et un justificatif de domicile.</p>
+        </li>
+        <li class="etape">
+          <h3>Nous gérons les démarches</h3>
+          <p>Immatriculation provisoire puis définitive en France : nous nous en occupons. La carte grise reste à votre charge.</p>
+        </li>
+        <li class="etape">
+          <h3>Vous récupérez votre voiture</h3>
+          <p>À notre local de Saint-Georges-de-Reneins, ou livrée chez vous partout en France.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="bande" id="formules">
+    <div class="cadre">
+      <div class="entete-section">
+        <p class="sur-titre">Tarifs de l'import sur mandat</p>
+        <h2>Trois formules, prix annoncés</h2>
+        <p class="chapeau">Nous ne prenons aucune marge sur le véhicule : vous payez la voiture au vendeur allemand, et notre prestation à part.</p>
+      </div>
+      <div class="formules">
+        <article class="formule">
+          <div class="formule__nom"><h3>Guide</h3></div>
+          <p class="formule__prix"><small>Prix fixe</small>1 139 €</p>
+          <ul>
+            <li>Recherche personnalisée</li>
+            <li>Contrôle physique et administratif du véhicule par notre expert</li>
+            <li>Rapport complet et carVertical</li>
+            <li>Accompagnement pour l'immatriculation</li>
+            <li class="non">Livraison à Saint-Georges-de-Reneins</li>
+            <li class="non">Nettoyage complet du véhicule</li>
+            <li class="non">Accueil à la gare ou à l'aéroport</li>
+            <li class="non">Livraison à domicile</li>
+          </ul>
+          <a class="bouton bouton--contour" href="#demande">Faire une demande</a>
+        </article>
+        <article class="formule formule--phare">
+          <div class="formule__nom"><h3>Clé en main</h3><span class="formule__badge">La plus choisie</span></div>
+          <p class="formule__prix"><small>À partir de</small>1 690 €</p>
+          <ul>
+            <li>Recherche personnalisée</li>
+            <li>Contrôle physique et administratif du véhicule par notre expert</li>
+            <li>Rapport complet et carVertical</li>
+            <li>Accompagnement pour l'immatriculation</li>
+            <li>Livraison à Saint-Georges-de-Reneins</li>
+            <li>Nettoyage complet du véhicule</li>
+            <li>Accueil à la gare ou à l'aéroport</li>
+            <li class="non">Livraison à domicile</li>
+          </ul>
+          <a class="bouton" href="#demande">Faire une demande</a>
+        </article>
+        <article class="formule">
+          <div class="formule__nom"><h3>Clé en main + domicile</h3></div>
+          <p class="formule__prix"><small>Livraison chiffrée selon la distance</small>Sur devis</p>
+          <ul>
+            <li>Recherche personnalisée</li>
+            <li>Contrôle physique et administratif du véhicule par notre expert</li>
+            <li>Rapport complet et carVertical</li>
+            <li>Accompagnement pour l'immatriculation</li>
+            <li>Livraison à Saint-Georges-de-Reneins</li>
+            <li>Nettoyage complet du véhicule</li>
+            <li>Accueil à la gare ou à l'aéroport</li>
+            <li>Livraison à domicile partout en France</li>
+          </ul>
+          <a class="bouton bouton--contour" href="#demande">Faire une demande</a>
+        </article>
+      </div>
+      <p class="formules__note">Le coût de la carte grise n'est pas inclus dans les formules.</p>
+    </div>
+  </section>
+
+  <section class="bande bande--carbone" id="avis">
+    <div class="cadre">
+      <div class="entete-section">
+        <p class="sur-titre">Avis clients</p>
+        <h2>Ils ont importé avec ZYCAR</h2>
+      </div>
+      <div class="avis">
+        <blockquote>
+          <p>ZYCAR a dépassé toutes mes attentes lors de l'importation de mon CUPRA Formentor. Le processus a été transparent, du choix du véhicule aux démarches administratives, et le prix compétitif.</p>
+          <footer><span>Adam C.</span> · Cupra Formentor</footer>
+        </blockquote>
+        <blockquote>
+          <p>Un service personnalisé et professionnel du début à la fin. Ils ont trouvé le véhicule parfait selon mes critères, et la livraison a été rapide et sans aucun souci.</p>
+          <footer><span>Cristine E.</span> · Volkswagen Golf</footer>
+        </blockquote>
+        <blockquote>
+          <p>J'ai été impressionné par leur professionnalisme, leur efficacité et leur souci du détail. Mon SQ5 est arrivé en parfait état, conforme à mes attentes.</p>
+          <footer><span>Theo B.</span> · Audi SQ5</footer>
+        </blockquote>
+      </div>
+
+      <div class="parrainage">
+        <span class="parrainage__montant">100 €</span>
+        <div class="parrainage__texte">
+          <h3>Parrainez un proche</h3>
+          <p>Vous nous recommandez et votre proche achète sa voiture chez ZYCAR : vous recevez un chèque de 100 €.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande" id="demande">
+    <div class="cadre">
+      <div class="demande">
+        <div class="demande__intro">
+          <p class="sur-titre">Votre demande</p>
+          <h2>Dites-nous ce que vous cherchez</h2>
+          <p class="chapeau">Devis gratuit, sans engagement. Nous vous rappelons sous 24 heures.</p>
+          <ul class="coordonnees">
+            <li><span class="etiquette">Téléphone</span><a href="tel:+33783198821">07 83 19 88 21</a></li>
+            <li><span class="etiquette">E-mail</span><a href="mailto:contact@zycar.fr">contact@zycar.fr</a></li>
+            <li><span class="etiquette">Local</span><span class="valeur">Saint-Georges-de-Reneins (69)</span></li>
+          </ul>
+        </div>
+
+        <form class="formulaire" name="demande" method="POST" data-netlify="true" netlify-honeypot="site-web">
+          <input type="hidden" name="form-name" value="demande">
+          <p class="piege"><label>Ne pas remplir : <input name="site-web" tabindex="-1" autocomplete="off"></label></p>
+
+          <div class="champ champ--large">
+            <label for="f-type">Votre demande concerne</label>
+            <select id="f-type" name="type-de-demande" required>
+              <option value="Recherche sur mandat">Une recherche de véhicule en Allemagne</option>
+              <option value="Véhicule en stock">Un véhicule en stock</option>
+              <option value="Autre question">Une autre question</option>
+            </select>
+          </div>
+          <div class="champ">
+            <label for="f-nom">Nom et prénom</label>
+            <input id="f-nom" name="nom" type="text" autocomplete="name" required>
+          </div>
+          <div class="champ">
+            <label for="f-tel">Téléphone</label>
+            <input id="f-tel" name="telephone" type="tel" autocomplete="tel" required>
+          </div>
+          <div class="champ champ--large">
+            <label for="f-email">E-mail</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="champ">
+            <label for="f-vehicule">Marque et modèle</label>
+            <input id="f-vehicule" name="vehicule" type="text" placeholder="Ex. Audi A3 Sportback S line">
+          </div>
+          <div class="champ">
+            <label for="f-budget">Budget maximum</label>
+            <input id="f-budget" name="budget" type="text" inputmode="numeric" placeholder="Ex. 25 000 €">
+          </div>
+          <div class="champ">
+            <label for="f-km">Kilométrage maximum</label>
+            <input id="f-km" name="kilometrage" type="text" inputmode="numeric" placeholder="Ex. 80 000 km">
+          </div>
+          <div class="champ">
+            <label for="f-energie">Énergie</label>
+            <select id="f-energie" name="energie">
+              <option value="">Indifférent</option>
+              <option>Essence</option>
+              <option>Diesel</option>
+              <option>Hybride</option>
+              <option>Électrique</option>
+            </select>
+          </div>
+          <div class="champ champ--large">
+            <label for="f-message">Précisions</label>
+            <textarea id="f-message" name="message" placeholder="Boîte, couleur, options indispensables, délai souhaité…"></textarea>
+          </div>
+          <div class="formulaire__envoi">
+            <button class="bouton" type="submit">Envoyer ma demande</button>
+            <p>Vos coordonnées servent uniquement à vous recontacter au sujet de cette demande.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pied">
+  <div class="cadre">
+    <div class="pied__grille">
+      <div>
+        <img src="assets/logo-zycar.webp" alt="ZYCAR" width="720" height="232">
+        <p>Véhicules d'occasion et import sur mandat depuis l'Allemagne.</p>
+      </div>
+      <div>
+        <p class="pied__titre">Contact</p>
+        <ul>
+          <li><a href="tel:+33783198821">07 83 19 88 21</a></li>
+          <li><a href="mailto:contact@zycar.fr">contact@zycar.fr</a></li>
+          <li>Saint-Georges-de-Reneins (69)</li>
+        </ul>
+      </div>
+      <div>
+        <p class="pied__titre">Nous suivre</p>
+        <ul>
+          <li><a href="https://www.leboncoin.fr/boutique/6770880/zycar.htm" target="_blank" rel="noopener">Leboncoin</a></li>
+          <li><a href="https://www.instagram.com/zycar.fr/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.tiktok.com/@zycar.fr" target="_blank" rel="noopener">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="pied__bas">© 2026 ZYCAR. Tous droits réservés.</p>
+  </div>
+</footer>
+
+</body>
+</html>
