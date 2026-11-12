@@ -1,5 +1,6 @@
 (function () {
   var racine = document.documentElement;
+  var calme = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* Une nouvelle page s'ouvre toujours en haut (sauf lien vers une section précise).
      Le repère #haut sert aussi quand le site est affiché dans un cadre dont c'est la page hôte qui défile. */
