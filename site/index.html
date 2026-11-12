@@ -149,32 +149,29 @@ h3 { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.015em; line-height:
 .garanties li { display: flex; align-items: center; gap: 9px; }
 .garanties li::before { content: "✓"; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: rgba(37, 197, 240, 0.16); color: var(--cyan); font-size: 0.7rem; font-weight: 700; }
 
-/* Vitrine : la voiture en grand, posée sur un sol miroir, le nom de la marque en filigrane */
+/* Galerie : deux colonnes de photos du stock qui défilent en sens opposés */
 .scene { position: relative; min-width: 0; }
-.vitrine { position: relative; width: 158%; margin-left: -6%; padding-top: 16%; }
-.anim .vitrine { animation: entree 1.8s var(--fluide) both; }
-@keyframes entree { from { opacity: 0; transform: translateX(9%) scale(1.04); } }
-.vitrine__mot {
-  position: absolute; left: 3%; top: 0; z-index: 0; white-space: nowrap;
-  font-family: var(--titre); font-weight: 700; font-size: clamp(5.5rem, 15vw, 13.5rem); line-height: 0.8; letter-spacing: -0.03em;
-  color: transparent; -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.2);
-  -webkit-mask-image: linear-gradient(#000 30%, transparent 92%); mask-image: linear-gradient(#000 30%, transparent 92%);
-  transform: translateX(calc(var(--px, 0) * 16px)); transition: transform .9s var(--fluide);
+.scene::before { content: ""; position: absolute; inset: 12% 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 197, 240, 0.3), rgba(44, 107, 255, 0.14) 60%, transparent); filter: blur(50px); }
+.galerie {
+  --ecart: 18px; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ecart);
+  height: clamp(460px, 46vw, 620px); overflow: hidden; transform: rotate(-4deg) scale(1.06);
+  -webkit-mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent); mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent);
 }
-.vitrine__spot {
-  position: absolute; left: 8%; right: 8%; top: 10%; bottom: 22%; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(95, 224, 255, 0.34), rgba(44, 107, 255, 0.16) 55%, transparent);
-  filter: blur(40px); animation: pouls 6s ease-in-out infinite alternate;
+.galerie__col { display: flex; flex-direction: column; height: max-content; animation: monte 46s linear infinite; }
+.galerie__col--inverse { animation-direction: reverse; }
+.galerie:hover .galerie__col { animation-play-state: paused; }
+.galerie img {
+  width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; margin-bottom: var(--ecart);
+  border-radius: 22px; border: 1px solid var(--bord); box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.9);
 }
-@keyframes pouls { to { opacity: 0.6; transform: scale(1.07); } }
-.vitrine__caisse { position: relative; z-index: 1; transform: translateX(calc(var(--px, 0) * -12px)); transition: transform .9s var(--fluide); }
-.vitrine__img { width: 100%; height: auto; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.75)); }
-.vitrine__sol { display: block; height: 1px; margin: -1px 2% 0; background: linear-gradient(90deg, transparent, rgba(95, 224, 255, 0.55) 30%, rgba(95, 224, 255, 0.55) 70%, transparent); }
-.vitrine__reflet {
-  width: 100%; height: auto; transform: scaleY(-1); opacity: 0.3; filter: blur(2px); margin-bottom: -14%;
-  -webkit-mask-image: linear-gradient(to top, #000, transparent 58%); mask-image: linear-gradient(to top, #000, transparent 58%);
+@keyframes monte { to { transform: translateY(-50%); } }
+@keyframes glisse { to { transform: translateX(-50%); } }
+@media (max-width: 940px) {
+  .galerie { --ecart: 12px; grid-template-columns: minmax(0, 1fr); height: auto; transform: none; margin-inline: -16px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .galerie__col { flex-direction: row; width: max-content; height: auto; animation-name: glisse; }
+  .galerie img { width: min(62vw, 300px); margin: 0 var(--ecart) 0 0; border-radius: 18px; }
 }
-@media (max-width: 940px) { .vitrine { width: 100%; margin-left: 0; padding-top: 18%; } }
 
 /* Marques qui défilent */
 .defile { overflow: hidden; border-block: 1px solid var(--bord); padding-block: 22px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
@@ -352,13 +349,30 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
         </div>
 
         <div class="scene" aria-hidden="true">
-          <div class="vitrine">
-            <span class="vitrine__mot">ZYCAR</span>
-            <span class="vitrine__spot"></span>
-            <div class="vitrine__caisse">
-              <img class="vitrine__img" src="assets/voiture.webp" alt="" width="1267" height="392">
-              <span class="vitrine__sol"></span>
-              <img class="vitrine__reflet" src="assets/voiture.webp" alt="" width="1267" height="392">
+          <div class="galerie">
+            <div class="galerie__col">
+              <img src="assets/stock-5.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-2.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-4.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-1.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-3.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-5.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-2.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-4.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-1.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-3.webp" alt="" width="640" height="480" loading="eager">
+            </div>
+            <div class="galerie__col galerie__col--inverse">
+              <img src="assets/stock-3.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-1.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-5.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-4.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-2.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-3.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-1.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-5.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-4.webp" alt="" width="640" height="480" loading="eager">
+              <img src="assets/stock-2.webp" alt="" width="640" height="480" loading="eager">
             </div>
           </div>
         </div>
@@ -691,14 +705,6 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
   nav.addEventListener("click", function (e) {
     if (e.target.tagName === "A") { nav.classList.remove("ouvert"); btn.setAttribute("aria-expanded", "false"); }
   });
-
-  /* Léger effet de profondeur sur la vitrine quand la souris bouge */
-  var ouverture = document.querySelector(".ouverture");
-  if (!calme && window.matchMedia("(hover: hover)").matches) {
-    ouverture.addEventListener("pointermove", function (e) {
-      ouverture.style.setProperty("--px", ((e.clientX / window.innerWidth) * 2 - 1).toFixed(3));
-    });
-  }
 
   /* Halo qui suit la souris sur les cartes */
   document.querySelectorAll(".carte").forEach(function (c) {
