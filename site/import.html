@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body data-univers="import">
 
 <header class="entete">
   <div class="cadre">
@@ -18,8 +18,8 @@
         <img src="assets/logo-zycar.webp" alt="ZYCAR" width="720" height="232">
       </a>
       <nav class="nav" id="nav" aria-label="Navigation principale">
-        <a href="vehicules.html">Véhicules</a>
-        <a href="import.html" aria-current="page">Import</a>
+        <a href="vehicules.html">Acheter</a>
+        <a href="import.html" aria-current="page">Importer</a>
         <a href="vendre.html">Vendre</a>
         <a href="blog.html">Blog</a>
         <a href="a-propos.html">À propos</a>
@@ -36,12 +36,27 @@
   <section class="page-tete">
     <div class="halos" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="cadre">
-      <p class="pastille r">Import sur mandat</p>
+      <p class="univers r"><b>2</b>Importer · sur mandat depuis l'Allemagne</p>
       <h1 class="r" style="--d:.08s">Votre voiture, trouvée <span class="degrade">en Allemagne pour vous.</span></h1>
       <p class="chapeau r" style="--d:.16s">Vous décrivez le modèle que vous voulez. Nous le trouvons, le faisons expertiser sur place et nous occupons de tout jusqu'à la remise des clés. Vous achetez directement au concessionnaire allemand, sans marge cachée.</p>
       <div class="ouverture__actions r" style="--d:.24s">
         <a class="bouton" href="recherche.html">Lancer ma recherche <span class="fleche" aria-hidden="true">→</span></a>
         <a class="bouton bouton--verre" href="#formules">Voir les formules</a>
+      </div>
+
+      <div class="reperes">
+        <div class="carte repere r">
+          <span class="repere__valeur degrade"><span data-compte="24">24</span> h</span>
+          <span class="repere__libelle">pour répondre à votre demande de recherche</span>
+        </div>
+        <div class="carte repere r" style="--d:.1s">
+          <span class="repere__valeur degrade"><span data-compte="10">10</span> jours</span>
+          <span class="repere__libelle">de délai de livraison après l'achat du véhicule</span>
+        </div>
+        <div class="carte repere r" style="--d:.2s">
+          <span class="repere__valeur degrade"><span data-compte="1139">1 139</span> €</span>
+          <span class="repere__libelle">la formule d'import Guide, à prix fixe</span>
+        </div>
       </div>
     </div>
   </section>
@@ -185,17 +200,28 @@
         <p>Véhicules d'occasion et import sur mandat depuis l'Allemagne.</p>
       </div>
       <div>
-        <p class="pied__titre">Le site</p>
+        <p class="pied__titre">Acheter</p>
         <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="vehicules.html">Nos véhicules</a></li>
+          <li><a href="vehicules.html">Véhicules en stock</a></li>
+          <li><a href="vehicules.html#livrees">Voitures livrées</a></li>
+        </ul>
+        <p class="pied__titre" style="margin-top:18px">Importer</p>
+        <ul>
           <li><a href="import.html">Import sur mandat</a></li>
           <li><a href="recherche.html">Recherche personnalisée</a></li>
-          <li><a href="vendre.html">Vendre ma voiture</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="pied__titre">Vendre</p>
+        <ul>
+          <li><a href="vendre.html">Rachat et dépôt-vente</a></li>
+          <li><a href="vendre.html#estimation">Estimation gratuite</a></li>
+        </ul>
+        <p class="pied__titre" style="margin-top:18px">ZYCAR</p>
+        <ul>
+          <li><a href="a-propos.html">À propos</a></li>
           <li><a href="blog.html">Blog</a></li>
           <li><a href="faq.html">Questions fréquentes</a></li>
-          <li><a href="a-propos.html">À propos</a></li>
-          <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
       <div>

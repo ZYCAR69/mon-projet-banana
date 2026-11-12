@@ -18,8 +18,8 @@
         <img src="assets/logo-zycar.webp" alt="ZYCAR" width="720" height="232">
       </a>
       <nav class="nav" id="nav" aria-label="Navigation principale">
-        <a href="vehicules.html">Véhicules</a>
-        <a href="import.html">Import</a>
+        <a href="vehicules.html">Acheter</a>
+        <a href="import.html">Importer</a>
         <a href="vendre.html">Vendre</a>
         <a href="blog.html">Blog</a>
         <a href="a-propos.html">À propos</a>
@@ -39,16 +39,17 @@
       <div class="ouverture__grille">
         <div class="ouverture__texte">
           <p class="pastille r">Saint-Georges-de-Reneins · Rhône</p>
-          <h1 class="r" style="--d:.08s">Votre prochaine voiture, <span class="degrade">en stock ou importée d'Allemagne.</span></h1>
-          <p class="chapeau r" style="--d:.16s">ZYCAR vend des véhicules d'occasion contrôlés et recherche en Allemagne le modèle précis que vous voulez. Dans les deux cas, la voiture vous est remise immatriculée en France.</p>
+          <h1 class="r" style="--d:.08s">Acheter, importer <span class="degrade">ou vendre votre voiture.</span></h1>
+          <p class="chapeau r" style="--d:.16s">ZYCAR a trois métiers, à Saint-Georges-de-Reneins : la vente de véhicules d'occasion en stock, l'import sur mandat depuis l'Allemagne, et le rachat ou le dépôt-vente de votre voiture.</p>
           <div class="ouverture__actions r" style="--d:.24s">
-            <a class="bouton" href="recherche.html">Je recherche un véhicule <span class="fleche" aria-hidden="true">→</span></a>
-            <a class="bouton bouton--verre" href="vendre.html">Vendre ma voiture</a>
+            <a class="bouton" href="vehicules.html">Acheter</a>
+            <a class="bouton" data-univers="import" href="import.html">Importer</a>
+            <a class="bouton" data-univers="vente" href="vendre.html">Vendre</a>
           </div>
           <ul class="garanties r" style="--d:.32s">
-            <li>Expertise sur place</li>
-            <li>Rapport vidéo</li>
-            <li>Immatriculation gérée</li>
+            <li>Véhicules contrôlés</li>
+            <li>Démarches gérées</li>
+            <li>Réponse sous 24 heures</li>
           </ul>
         </div>
 
@@ -90,20 +91,6 @@
         </div>
       </div>
 
-      <div class="reperes">
-        <div class="carte repere r">
-          <span class="repere__valeur degrade"><span data-compte="24">24</span> h</span>
-          <span class="repere__libelle">pour répondre à votre demande de recherche</span>
-        </div>
-        <div class="carte repere r" style="--d:.1s">
-          <span class="repere__valeur degrade"><span data-compte="10">10</span> jours</span>
-          <span class="repere__libelle">de délai de livraison après l'achat du véhicule</span>
-        </div>
-        <div class="carte repere r" style="--d:.2s">
-          <span class="repere__valeur degrade"><span data-compte="1139">1 139</span> €</span>
-          <span class="repere__libelle">la formule d'import Guide, à prix fixe</span>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -118,39 +105,42 @@
   <section class="section" id="parcours">
     <div class="cadre">
       <div class="tete">
-        <p class="pastille r">Que cherchez-vous ?</p>
-        <h2 class="r" style="--d:.08s">Acheter, importer <span class="degrade">ou vendre.</span></h2>
+        <p class="pastille r">Nos trois métiers</p>
+        <h2 class="r" style="--d:.08s">Dites-nous ce que <span class="degrade">vous voulez faire.</span></h2>
       </div>
       <div class="voies voies--trois">
         <article class="carte voie r">
-          <span class="voie__icone" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l2-5a2 2 0 0 1 2-1.300h10A2 2 0 0 1 19 8l2 5v4h-2.500M5.500 17H3v-4M8 17h8"/><circle cx="7" cy="17" r="1.600"/><circle cx="17" cy="17" r="1.600"/></svg></span>
-          <h3>Acheter un véhicule en stock</h3>
-          <p>Des voitures déjà importées, contrôlées et immatriculées, à voir et essayer à Saint-Georges-de-Reneins.</p>
+          <p class="univers"><b>1</b>Acheter</p>
+          <h3>Un véhicule en stock</h3>
+          <p class="voie__pour">Vous voulez une voiture disponible tout de suite.</p>
+          <p>Des occasions contrôlées et immatriculées en France, à voir et essayer dans notre local.</p>
           <ul class="liste">
-            <li>Disponibles tout de suite</li>
+            <li>Essai sur rendez-vous</li>
             <li>Historique et kilométrage certifiés</li>
           </ul>
-          <a class="bouton bouton--verre" href="vehicules.html">Voir les véhicules <span class="fleche" aria-hidden="true">→</span></a>
+          <a class="bouton" href="vehicules.html">Voir les véhicules <span class="fleche" aria-hidden="true">→</span></a>
         </article>
-        <article class="carte voie voie--phare r" style="--d:.1s">
-          <span class="voie__icone" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.500"/><path d="M20 20l-4.300-4.300M8.500 11h5M11 8.500v5"/></svg></span>
-          <h3>Importer sur mandat</h3>
-          <p>Vous décrivez la voiture que vous voulez. Nous la trouvons en Allemagne, la faisons expertiser et gérons tout jusqu'à la remise des clés.</p>
+        <article class="carte voie r" data-univers="import" style="--d:.1s">
+          <p class="univers"><b>2</b>Importer</p>
+          <h3>Un import sur mandat</h3>
+          <p class="voie__pour">Vous voulez un modèle précis, introuvable ou trop cher en France.</p>
+          <p>Nous le trouvons en Allemagne, le faisons expertiser et gérons tout jusqu'à la remise des clés.</p>
           <ul class="liste">
             <li>Jusqu'à 30 % d'économie</li>
             <li>Formules dès 1 139 €</li>
           </ul>
           <a class="bouton" href="import.html">Découvrir l'import <span class="fleche" aria-hidden="true">→</span></a>
         </article>
-        <article class="carte voie r" style="--d:.2s">
-          <span class="voie__icone" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.500 8.500a4.500 4.500 0 1 0 0 7M7 11h6M7 13.500h5"/></svg></span>
-          <h3>Vendre ma voiture</h3>
-          <p>Rachat immédiat ou dépôt-vente : décrivez votre véhicule et recevez notre estimation.</p>
+        <article class="carte voie r" data-univers="vente" style="--d:.2s">
+          <p class="univers"><b>3</b>Vendre</p>
+          <h3>Rachat ou dépôt-vente</h3>
+          <p class="voie__pour">Vous voulez vendre votre voiture sans vous en occuper.</p>
+          <p>Nous la rachetons tout de suite, ou nous la vendons pour vous au meilleur prix.</p>
           <ul class="liste">
             <li>Estimation gratuite</li>
             <li>Réponse sous 24 heures</li>
           </ul>
-          <a class="bouton bouton--verre" href="vendre.html">Faire estimer ma voiture <span class="fleche" aria-hidden="true">→</span></a>
+          <a class="bouton" href="vendre.html">Faire estimer ma voiture <span class="fleche" aria-hidden="true">→</span></a>
         </article>
       </div>
     </div>
@@ -195,7 +185,7 @@
       <div class="demande">
         <div class="demande__intro">
           <p class="pastille r">Votre demande</p>
-          <h2 class="r" style="--d:.08s">Dites-nous ce que <span class="degrade">vous cherchez.</span></h2>
+          <h2 class="r" style="--d:.08s">Une question ? <span class="degrade">Écrivez-nous.</span></h2>
           <p class="chapeau r" style="--d:.16s">Devis gratuit, sans engagement. Nous vous rappelons sous 24 heures.</p>
           <ul class="coordonnees r" style="--d:.24s">
             <li><i aria-hidden="true">☎</i><div><small>Téléphone</small><a href="tel:+33783198821">07 83 19 88 21</a></div></li>
@@ -211,8 +201,9 @@
           <fieldset class="champ champ--large">
             <legend>Votre demande concerne</legend>
             <div class="choix">
-              <label><input id="f-type-1" type="radio" name="type-de-demande" value="Recherche sur mandat" checked><span>Une recherche en Allemagne</span></label>
-              <label><input id="f-type-2" type="radio" name="type-de-demande" value="Véhicule en stock"><span>Un véhicule en stock</span></label>
+              <label><input id="f-type-2" type="radio" name="type-de-demande" value="Achat - véhicule en stock" checked><span>Acheter un véhicule en stock</span></label>
+              <label><input id="f-type-1" type="radio" name="type-de-demande" value="Import sur mandat"><span>Importer d'Allemagne</span></label>
+              <label><input id="f-type-4" type="radio" name="type-de-demande" value="Vente - rachat ou dépôt-vente"><span>Vendre ma voiture</span></label>
               <label><input id="f-type-3" type="radio" name="type-de-demande" value="Autre question"><span>Autre question</span></label>
             </div>
           </fieldset>
@@ -272,17 +263,28 @@
         <p>Véhicules d'occasion et import sur mandat depuis l'Allemagne.</p>
       </div>
       <div>
-        <p class="pied__titre">Le site</p>
+        <p class="pied__titre">Acheter</p>
         <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="vehicules.html">Nos véhicules</a></li>
+          <li><a href="vehicules.html">Véhicules en stock</a></li>
+          <li><a href="vehicules.html#livrees">Voitures livrées</a></li>
+        </ul>
+        <p class="pied__titre" style="margin-top:18px">Importer</p>
+        <ul>
           <li><a href="import.html">Import sur mandat</a></li>
           <li><a href="recherche.html">Recherche personnalisée</a></li>
-          <li><a href="vendre.html">Vendre ma voiture</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="pied__titre">Vendre</p>
+        <ul>
+          <li><a href="vendre.html">Rachat et dépôt-vente</a></li>
+          <li><a href="vendre.html#estimation">Estimation gratuite</a></li>
+        </ul>
+        <p class="pied__titre" style="margin-top:18px">ZYCAR</p>
+        <ul>
+          <li><a href="a-propos.html">À propos</a></li>
           <li><a href="blog.html">Blog</a></li>
           <li><a href="faq.html">Questions fréquentes</a></li>
-          <li><a href="a-propos.html">À propos</a></li>
-          <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
       <div>

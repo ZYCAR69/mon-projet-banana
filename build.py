@@ -7,7 +7,7 @@
 import pathlib, re, shutil, sys
 
 RACINE = pathlib.Path(__file__).parent
-MENU = [("vehicules.html", "Véhicules"), ("import.html", "Import"), ("vendre.html", "Vendre"),
+MENU = [("vehicules.html", "Acheter"), ("import.html", "Importer"), ("vendre.html", "Vendre"),
         ("blog.html", "Blog"), ("a-propos.html", "À propos"), ("contact.html", "Contact")]
 
 GABARIT = """<!DOCTYPE html>
@@ -21,7 +21,7 @@ GABARIT = """<!DOCTYPE html>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body{univers}>
 
 <header class="entete">
   <div class="cadre">
@@ -49,17 +49,28 @@ GABARIT = """<!DOCTYPE html>
         <p>Véhicules d'occasion et import sur mandat depuis l'Allemagne.</p>
       </div>
       <div>
-        <p class="pied__titre">Le site</p>
+        <p class="pied__titre">Acheter</p>
         <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="vehicules.html">Nos véhicules</a></li>
+          <li><a href="vehicules.html">Véhicules en stock</a></li>
+          <li><a href="vehicules.html#livrees">Voitures livrées</a></li>
+        </ul>
+        <p class="pied__titre" style="margin-top:18px">Importer</p>
+        <ul>
           <li><a href="import.html">Import sur mandat</a></li>
           <li><a href="recherche.html">Recherche personnalisée</a></li>
-          <li><a href="vendre.html">Vendre ma voiture</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="pied__titre">Vendre</p>
+        <ul>
+          <li><a href="vendre.html">Rachat et dépôt-vente</a></li>
+          <li><a href="vendre.html#estimation">Estimation gratuite</a></li>
+        </ul>
+        <p class="pied__titre" style="margin-top:18px">ZYCAR</p>
+        <ul>
+          <li><a href="a-propos.html">À propos</a></li>
           <li><a href="blog.html">Blog</a></li>
           <li><a href="faq.html">Questions fréquentes</a></li>
-          <li><a href="a-propos.html">À propos</a></li>
-          <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
       <div>
@@ -117,13 +128,14 @@ def construire(sortie, apercu=False):
         texte = page.read_text(encoding="utf-8")
         titre = re.search(r"<!-- titre: (.*?) -->", texte).group(1)
         description = re.search(r"<!-- description: (.*?) -->", texte).group(1)
-        contenu = re.sub(r"<!-- (titre|description): .*? -->\n", "", texte)
+        univers = re.search(r"<!-- univers: (.*?) -->", texte)
+        contenu = re.sub(r"<!-- (titre|description|univers): .*? -->\n", "", texte)
         menu = "\n".join(
             '        <a href="{}"{}>{}</a>'.format(
                 lien.replace("index.html", "") if page.name == "index.html" and "#" in lien else lien,
                 ' aria-current="page"' if lien == page.name or (lien == "blog.html" and page.name.startswith("blog-")) else "", nom)
             for lien, nom in MENU)
-        html = GABARIT.format(titre=titre, description=description, menu=menu, contenu=contenu,
+        html = GABARIT.format(univers=' data-univers="%s"' % univers.group(1) if univers else "", titre=titre, description=description, menu=menu, contenu=contenu,
                               extra=APERCU if apercu else "")
         (sortie / page.name).write_text(html, encoding="utf-8")
         print("écrit", sortie / page.name)
