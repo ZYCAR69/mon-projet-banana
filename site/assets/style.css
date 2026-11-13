@@ -178,7 +178,7 @@ h3 { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.015em; line-height:
 /* Repères chiffrés */
 .reperes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: clamp(40px, 6vw, 72px); }
 .repere { display: grid; gap: 6px; align-content: start; padding: 26px 28px; }
-.repere__valeur { font-family: var(--titre); font-weight: 700; font-size: clamp(2.2rem, 4.6vw, 3.3rem); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.repere__valeur { font-family: var(--titre); font-weight: 700; font-size: clamp(2.2rem, 4.6vw, 3.3rem); line-height: 1.25; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .repere__libelle { color: var(--doux); font-size: 0.98rem; }
 @media (max-width: 720px) { .reperes { grid-template-columns: minmax(0, 1fr); } }
 
@@ -426,3 +426,4 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
 
 .livrees figure::before { content: "Vendue"; position: absolute; z-index: 1; top: 12px; left: 12px; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; background: rgba(4, 6, 10, 0.72); border: 1px solid var(--bord); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .livrees--livraison figure::before { content: "Livrée"; }
+.parrainage__montant, .atout__chiffre { padding-bottom: 0.08em; }
