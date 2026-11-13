@@ -425,3 +425,4 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
 .pied__grille > div { min-width: 0; }
 
 .livrees figure::before { content: "Vendue"; position: absolute; z-index: 1; top: 12px; left: 12px; padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; background: rgba(4, 6, 10, 0.72); border: 1px solid var(--bord); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.livrees--livraison figure::before { content: "Livrée"; }
