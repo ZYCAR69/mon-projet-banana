@@ -93,7 +93,7 @@ GABARIT = """<!DOCTYPE html>
         </ul>
       </div>
     </div>
-    <p class="pied__bas">© 2026 ZYCAR. Tous droits réservés.</p>
+    <p class="pied__bas">© 2026 ZYCAR. Tous droits réservés. · <a href="mentions-legales.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a></p>
   </div>
 </footer>
 
