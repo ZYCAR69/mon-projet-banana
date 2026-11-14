@@ -4,10 +4,10 @@
     python3 build.py            -> écrit le site dans site/
     python3 build.py DOSSIER    -> écrit une copie d'aperçu (envoi des formulaires désactivé)
 """
-import pathlib, re, shutil, sys
+import pathlib, re, shutil, sys, unicodedata
 
 RACINE = pathlib.Path(__file__).parent
-MENU = [("vehicules.html", "Acheter"), ("import.html", "Importer"), ("vendre.html", "Vendre"),
+MENU = [("vehicules.html", "Acheter"), ("import.html", "Importer"), ("vendre.html", "Vendre"), ("galerie.html", "Galerie"),
         ("blog.html", "Blog"), ("a-propos.html", "À propos"), ("contact.html", "Contact")]
 
 GABARIT = """<!DOCTYPE html>
@@ -54,7 +54,7 @@ GABARIT = """<!DOCTYPE html>
         <ul>
           <li><a href="https://www.leboncoin.fr/boutique/6770880/zycar.htm" target="_blank" rel="noopener">Stock sur Leboncoin</a></li>
           <li><a href="vehicules.html">Acheter chez ZYCAR</a></li>
-          <li><a href="vehicules.html#livrees">Voitures déjà vendues</a></li>
+          <li><a href="galerie.html">Galerie des véhicules vendus</a></li>
         </ul>
         <p class="pied__titre" style="margin-top:18px">Importer</p>
         <ul>
@@ -119,8 +119,44 @@ document.querySelectorAll("form").forEach(function (f) {
 </script>"""
 
 
+def galerie():
+    """Lit le dossier galerie/ et prépare une photo 800 x 600 par véhicule vendu. Renvoie la liste (fichier, légende)."""
+    source, cible = RACINE / "galerie", RACINE / "site" / "assets" / "galerie"
+    cible.mkdir(parents=True, exist_ok=True)
+    photos = sorted(p for p in source.iterdir() if p.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"))
+    numerotees = [p for p in photos if re.match(r"\d+[ _.-]", p.name)]
+    photos = numerotees + [p for p in photos if p not in numerotees]
+    resultat, gardes = [], set()
+    for photo in photos:
+        legende = re.sub(r"^\d+[ _.-]+", "", photo.stem).replace("_", " ").strip()
+        ascii_ = unicodedata.normalize("NFKD", photo.stem).encode("ascii", "ignore").decode().lower()
+        nom = re.sub(r"[^a-z0-9]+", "-", ascii_).strip("-") + ".webp"
+        sortie = cible / nom
+        if not sortie.exists() or sortie.stat().st_mtime < photo.stat().st_mtime:
+            try:
+                from PIL import Image, ImageOps
+                image = ImageOps.exif_transpose(Image.open(photo)).convert("RGB")
+                ImageOps.fit(image, (800, 600), Image.LANCZOS).save(sortie, quality=84)
+            except ImportError:  # sans Pillow, la photo est copiée telle quelle et recadrée par le navigateur
+                nom = re.sub(r"\.webp$", photo.suffix.lower(), nom)
+                shutil.copy(photo, cible / nom)
+        gardes.add(nom)
+        resultat.append((nom, legende))
+    for ancien in cible.iterdir():
+        if ancien.name not in gardes:
+            ancien.unlink()
+    return resultat
+
+
+def figures(photos):
+    return "\n".join(
+        '        <figure class="r"><img src="assets/galerie/{0}" alt="{1} vendue par ZYCAR" width="800" height="600" '
+        'loading="lazy"><figcaption>{1}</figcaption></figure>'.format(nom, legende) for nom, legende in photos)
+
+
 def construire(sortie, apercu=False):
     sortie.mkdir(parents=True, exist_ok=True)
+    photos = galerie()
     if sortie != RACINE / "site":
         shutil.copytree(RACINE / "site" / "assets", sortie / "assets", dirs_exist_ok=True)
     for page in sorted((RACINE / "src" / "pages").glob("*.html")):
@@ -129,6 +165,8 @@ def construire(sortie, apercu=False):
         description = re.search(r"<!-- description: (.*?) -->", texte).group(1)
         univers = re.search(r"<!-- univers: (.*?) -->", texte)
         contenu = re.sub(r"<!-- (titre|description|univers): .*? -->\n", "", texte)
+        contenu = contenu.replace("<!-- galerie -->", figures(photos))
+        contenu = re.sub(r"<!-- galerie:(\d+) -->", lambda m: figures(photos[:int(m.group(1))]), contenu)
         menu = "\n".join(
             '        <a href="{}"{}>{}</a>'.format(
                 lien.replace("index.html", "") if page.name == "index.html" and "#" in lien else lien,
