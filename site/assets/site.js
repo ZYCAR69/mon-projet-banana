@@ -149,6 +149,46 @@
     })(avant);
   }
 
+  /* Adresse : choix de l'application de guidage (Waze, Google Maps, Plans…) */
+  var LIEU_GOOGLE = "ZYCAR Saint-Georges-de-Reneins", LIEU = "Saint-Georges-de-Reneins 69830";
+  var fenetre = null;
+  var ouvrirItineraire = function () {
+    if (!fenetre) {
+      var pomme = /iP(hone|ad|od)|Mac/.test(navigator.platform || "");
+      var tactile = "ontouchstart" in window;
+      var q = encodeURIComponent(LIEU), choix = [
+        ["Waze", "https://waze.com/ul?q=" + q + "&navigate=yes"],
+        ["Google Maps", "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(LIEU_GOOGLE)]
+      ];
+      if (pomme) choix.push(["Plans (Apple)", "https://maps.apple.com/?daddr=" + q]);
+      if (!pomme && tactile) choix.push(["Autre application GPS", "geo:0,0?q=" + q]);
+      fenetre = document.createElement("dialog");
+      fenetre.className = "itineraire";
+      fenetre.innerHTML = "<h3>Venir chez ZYCAR</h3><p>Saint-Georges-de-Reneins (69). Choisissez votre application :</p><div class=\"itineraire__choix\">" +
+        choix.map(function (c) { return "<a href=\"" + c[1] + "\" target=\"_blank\" rel=\"noopener\">" + c[0] + "</a>"; }).join("") +
+        "</div><button type=\"button\">Fermer</button>";
+      document.body.appendChild(fenetre);
+      fenetre.addEventListener("click", function (e) {
+        if (e.target === fenetre || e.target.tagName === "BUTTON" || e.target.tagName === "A") fenetre.close();
+      });
+    }
+    fenetre.showModal();
+  };
+  document.addEventListener("click", function (e) {
+    var lien = e.target.closest && e.target.closest("[data-itineraire]");
+    if (!lien || !window.HTMLDialogElement) return;
+    e.preventDefault();
+    ouvrirItineraire();
+  });
+
+  /* Carte du pied de page : chargée seulement à la demande */
+  var carteBtn = document.getElementById("carte-btn");
+  if (carteBtn) carteBtn.addEventListener("click", function () {
+    var cadre = document.getElementById("carte");
+    if (window.ZYCAR_APERCU) { cadre.innerHTML = "<p>La carte Google Maps s'affichera ici sur le site en ligne.<br>Elle ne peut pas être chargée dans cet aperçu.</p>"; return; }
+    cadre.innerHTML = "<iframe title=\"Carte : ZYCAR à Saint-Georges-de-Reneins\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\" src=\"https://www.google.com/maps?q=" + encodeURIComponent(LIEU_GOOGLE) + "&z=12&output=embed\"></iframe>";
+  });
+
   /* Halo qui suit la souris sur les cartes */
   document.querySelectorAll(".carte").forEach(function (c) {
     c.addEventListener("pointermove", function (e) {

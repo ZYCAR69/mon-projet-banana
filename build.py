@@ -4,9 +4,22 @@
     python3 build.py            -> écrit le site dans site/
     python3 build.py DOSSIER    -> écrit une copie d'aperçu (envoi des formulaires désactivé)
 """
-import pathlib, re, shutil, sys, unicodedata
+import datetime, json, pathlib, re, shutil, sys, unicodedata
 
 RACINE = pathlib.Path(__file__).parent
+DOMAINE = "https://www.zycar.fr"
+DONNEES = {
+    "@context": "https://schema.org", "@type": "AutoDealer", "name": "ZYCAR", "url": DOMAINE + "/",
+    "logo": DOMAINE + "/assets/favicon-512.png", "image": DOMAINE + "/assets/partage.jpg",
+    "telephone": "+33783198821",
+    "description": "Vente de véhicules en stock, import sur mandat depuis l'Allemagne, rachat et dépôt-vente.",
+    "address": {"@type": "PostalAddress", "addressLocality": "Saint-Georges-de-Reneins", "postalCode": "69830",
+                "addressRegion": "Auvergne-Rhône-Alpes", "addressCountry": "FR"},
+    "areaServed": ["Villefranche-sur-Saône", "Lyon", "Rhône", "France"],
+    "sameAs": ["https://www.instagram.com/zycar.fr/", "https://www.tiktok.com/@zycar.fr",
+               "https://www.leboncoin.fr/boutique/6770880/zycar.htm"],
+}
+HORS_INDEX = ("merci.html", "404.html")
 MENU = [("vehicules.html", "Acheter"), ("import.html", "Importer"), ("vendre.html", "Vendre"), ("galerie.html", "Galerie"),
         ("blog.html", "Blog"), ("a-propos.html", "À propos"), ("contact.html", "Contact")]
 
@@ -18,7 +31,21 @@ GABARIT = """<!DOCTYPE html>
 <title>{titre}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="{description}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap">
+<link rel="canonical" href="{url}">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<meta name="theme-color" content="#04060a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ZYCAR">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="{titre}">
+<meta property="og:description" content="{description}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{partage}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+{robots}<script type="application/ld+json">{donnees}</script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body{univers}>
@@ -44,6 +71,20 @@ GABARIT = """<!DOCTYPE html>
 
 <footer class="pied">
   <div class="cadre">
+    <div class="pied__carte">
+      <div class="pied__carte-texte">
+        <h3>Nous trouver</h3>
+        <p>Saint-Georges-de-Reneins (69), près de Villefranche-sur-Saône, au nord de Lyon.</p>
+        <p>Accueil sur rendez-vous.</p>
+        <div class="appel__actions">
+          <a class="bouton" href="https://www.google.com/maps/search/?api=1&amp;query=ZYCAR+Saint-Georges-de-Reneins" target="_blank" rel="noopener" data-itineraire>Itinéraire <span class="fleche" aria-hidden="true">→</span></a>
+          <a class="bouton bouton--verre" href="tel:+33783198821">Prendre rendez-vous</a>
+        </div>
+      </div>
+      <div class="pied__carte-cadre" id="carte">
+        <button class="bouton bouton--verre" type="button" id="carte-btn">Afficher la carte</button>
+      </div>
+    </div>
     <div class="pied__grille">
       <div>
         <img src="assets/logo-zycar.webp" alt="ZYCAR" width="720" height="232">
@@ -80,7 +121,7 @@ GABARIT = """<!DOCTYPE html>
         <ul>
           <li><a href="tel:+33783198821">07 83 19 88 21</a></li>
           <li><a href="mailto:contact@zycar.fr">contact@zycar.fr</a></li>
-          <li>Saint-Georges-de-Reneins (69)</li>
+          <li><a href="https://www.google.com/maps/search/?api=1&amp;query=ZYCAR+Saint-Georges-de-Reneins" target="_blank" rel="noopener" data-itineraire>Saint-Georges-de-Reneins (69)</a></li>
         </ul>
       </div>
       <div>
@@ -110,6 +151,7 @@ GABARIT = """<!DOCTYPE html>
 
 APERCU = """
 <script>
+window.ZYCAR_APERCU = true;
 document.querySelectorAll("form").forEach(function (f) {
   f.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -172,10 +214,20 @@ def construire(sortie, apercu=False):
                 lien.replace("index.html", "") if page.name == "index.html" and "#" in lien else lien,
                 ' aria-current="page"' if lien == page.name or (lien == "blog.html" and page.name.startswith("blog-")) else "", nom)
             for lien, nom in MENU)
-        html = GABARIT.format(univers=' data-univers="%s"' % univers.group(1) if univers else "", titre=titre, description=description, menu=menu, contenu=contenu,
+        url = DOMAINE + "/" + ("" if page.name == "index.html" else page.name)
+        html = GABARIT.format(url=url, partage=DOMAINE + "/assets/partage.jpg",
+                              donnees=json.dumps(DONNEES, ensure_ascii=False),
+                              robots='<meta name="robots" content="noindex">\n' if page.name in HORS_INDEX else "",
+                              univers=' data-univers="%s"' % univers.group(1) if univers else "", titre=titre, description=description, menu=menu, contenu=contenu,
                               extra=APERCU if apercu else "")
         (sortie / page.name).write_text(html, encoding="utf-8")
         print("écrit", sortie / page.name)
+    # plan du site et consignes pour les moteurs de recherche
+    jour = datetime.date.today().isoformat()
+    pages = [p.name for p in sorted((RACINE / "src" / "pages").glob("*.html")) if p.name not in HORS_INDEX]
+    liens = "".join("  <url><loc>{}/{}</loc><lastmod>{}</lastmod></url>\n".format(DOMAINE, "" if n == "index.html" else n, jour) for n in pages)
+    (sortie / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + liens + "</urlset>\n", encoding="utf-8")
+    shutil.copy(RACINE / "src" / "robots.txt", sortie / "robots.txt")
 
 
 if __name__ == "__main__":
