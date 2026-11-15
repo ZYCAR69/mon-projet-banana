@@ -73,34 +73,39 @@
     });
   }
 
-  /* Galerie de l'accueil : elle défile seule, et se fait glisser à la souris ou au doigt */
+  /* Galerie de l'accueil : elle défile seule et se déplace à la main.
+     Sur ordinateur (colonnes), on la fait glisser à la souris.
+     Sur téléphone (rangées), c'est le défilement natif du navigateur, donc aussi fluide que le reste du téléphone. */
   var galerie = document.querySelector(".galerie");
   if (galerie && window.requestAnimationFrame) {
     var enLigne = window.matchMedia("(max-width: 940px)");
     var pistes = [].map.call(galerie.querySelectorAll(".galerie__col"), function (el, i) {
-      return { el: el, sens: i % 2 ? -1 : 1, pos: 0, v: 0, demi: 1, tenu: false, dernier: 0, quand: 0 };
+      /* le contenu est fourni en double : on ajoute une troisième série pour boucler sans à-coup */
+      var enfants = [].slice.call(el.children), serie = enfants.slice(0, enfants.length / 2);
+      serie.forEach(function (img) { el.appendChild(img.cloneNode(true)); });
+      return { el: el, sens: i % 2 ? -1 : 1, pos: 0, v: 0, serie: 1, tenu: false, dernier: 0, quand: 0, attendu: -1, libre: 0, mode: "" };
     });
     var mesurer = function () {
-      pistes.forEach(function (p) { p.demi = Math.max(1, (enLigne.matches ? p.el.scrollWidth : p.el.scrollHeight) / 2); });
+      pistes.forEach(function (p) {
+        p.serie = Math.max(1, (enLigne.matches ? p.el.scrollWidth : p.el.scrollHeight) / 3);
+      });
     };
     galerie.classList.add("galerie--libre");
     mesurer();
     window.addEventListener("resize", mesurer);
     window.addEventListener("load", mesurer);
     pistes.forEach(function (p) {
-      var coord = function (e) { return enLigne.matches ? e.clientX : e.clientY; };
+      /* souris, en colonnes */
       p.el.addEventListener("pointerdown", function (e) {
-        if (e.pointerType === "mouse" && e.button !== 0) return;
-        p.tenu = true; p.dernier = coord(e); p.quand = performance.now(); p.v = 0;
+        if (enLigne.matches || e.pointerType !== "mouse" || e.button !== 0) return;
+        p.tenu = true; p.dernier = e.clientY; p.quand = performance.now(); p.v = 0;
         try { p.el.setPointerCapture(e.pointerId); } catch (err) {}
         galerie.classList.add("galerie--saisie");
       });
       p.el.addEventListener("pointermove", function (e) {
-        if (!p.tenu) return;
-        var c = coord(e), t = performance.now(), d = p.dernier - c, dt = Math.max(1, t - p.quand);
-        p.pos += d;
-        p.v = 0.7 * p.v + 0.3 * (d / dt);
-        p.dernier = c; p.quand = t;
+        if (!p.tenu || enLigne.matches) return;
+        var t = performance.now(), d = p.dernier - e.clientY, dt = Math.max(1, t - p.quand);
+        p.pos += d; p.v = 0.7 * p.v + 0.3 * (d / dt); p.dernier = e.clientY; p.quand = t;
       });
       var lacher = function () {
         if (!p.tenu) return;
@@ -111,18 +116,34 @@
       p.el.addEventListener("pointerup", lacher);
       p.el.addEventListener("pointercancel", lacher);
       p.el.addEventListener("dragstart", function (e) { e.preventDefault(); });
+      /* doigt, en rangées : on se contente de savoir quand le doigt est posé */
+      p.el.addEventListener("touchstart", function () { p.doigt = true; }, { passive: true });
+      var lever = function () { p.doigt = false; p.libre = performance.now(); };
+      p.el.addEventListener("touchend", lever, { passive: true });
+      p.el.addEventListener("touchcancel", lever, { passive: true });
     });
     var avant = performance.now();
     (function tourner(t) {
       var dt = Math.min(64, t - avant); avant = t;
+      var ligne = enLigne.matches;
       pistes.forEach(function (p) {
-        var croisiere = calme ? 0 : p.sens * p.demi / 64000;
-        if (!p.tenu) {
-          p.v += (croisiere - p.v) * Math.min(1, dt * 0.003);
-          p.pos += p.v * dt;
+        var croisiere = calme ? 0 : p.sens * p.serie / 64000;
+        if (ligne) {
+          if (p.mode !== "ligne") { p.mode = "ligne"; p.el.style.transform = "none"; p.pos = p.serie; p.el.scrollLeft = p.pos; p.attendu = p.el.scrollLeft; }
+          var reel = p.el.scrollLeft;
+          if (p.doigt || Math.abs(reel - p.attendu) > 1.5) { p.libre = t; p.pos = reel; p.attendu = reel; return; }
+          if (t - p.libre < 700) { p.pos = reel; p.attendu = reel; return; }   /* on laisse finir l'élan du doigt */
+          p.pos += croisiere * dt;
+          if (p.pos >= p.serie * 1.5) p.pos -= p.serie;
+          if (p.pos < p.serie * 0.5) p.pos += p.serie;
+          p.el.scrollLeft = p.pos;
+          p.attendu = p.el.scrollLeft;
+        } else {
+          if (p.mode !== "colonne") { p.mode = "colonne"; p.el.scrollLeft = 0; p.pos = 0; p.v = 0; }
+          if (!p.tenu) { p.v += (croisiere - p.v) * Math.min(1, dt * 0.003); p.pos += p.v * dt; }
+          p.pos = ((p.pos % p.serie) + p.serie) % p.serie;
+          p.el.style.transform = "translate3d(0," + (-p.pos) + "px,0)";
         }
-        p.pos = ((p.pos % p.demi) + p.demi) % p.demi;
-        p.el.style.transform = enLigne.matches ? "translate3d(" + (-p.pos) + "px,0,0)" : "translate3d(0," + (-p.pos) + "px,0)";
       });
       requestAnimationFrame(tourner);
     })(avant);
