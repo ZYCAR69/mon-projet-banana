@@ -73,6 +73,61 @@
     });
   }
 
+  /* Galerie de l'accueil : elle défile seule, et se fait glisser à la souris ou au doigt */
+  var galerie = document.querySelector(".galerie");
+  if (galerie && window.requestAnimationFrame) {
+    var enLigne = window.matchMedia("(max-width: 940px)");
+    var pistes = [].map.call(galerie.querySelectorAll(".galerie__col"), function (el, i) {
+      return { el: el, sens: i % 2 ? -1 : 1, pos: 0, v: 0, demi: 1, tenu: false, dernier: 0, quand: 0 };
+    });
+    var mesurer = function () {
+      pistes.forEach(function (p) { p.demi = Math.max(1, (enLigne.matches ? p.el.scrollWidth : p.el.scrollHeight) / 2); });
+    };
+    galerie.classList.add("galerie--libre");
+    mesurer();
+    window.addEventListener("resize", mesurer);
+    window.addEventListener("load", mesurer);
+    pistes.forEach(function (p) {
+      var coord = function (e) { return enLigne.matches ? e.clientX : e.clientY; };
+      p.el.addEventListener("pointerdown", function (e) {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        p.tenu = true; p.dernier = coord(e); p.quand = performance.now(); p.v = 0;
+        try { p.el.setPointerCapture(e.pointerId); } catch (err) {}
+        galerie.classList.add("galerie--saisie");
+      });
+      p.el.addEventListener("pointermove", function (e) {
+        if (!p.tenu) return;
+        var c = coord(e), t = performance.now(), d = p.dernier - c, dt = Math.max(1, t - p.quand);
+        p.pos += d;
+        p.v = 0.7 * p.v + 0.3 * (d / dt);
+        p.dernier = c; p.quand = t;
+      });
+      var lacher = function () {
+        if (!p.tenu) return;
+        p.tenu = false;
+        if (performance.now() - p.quand > 120) p.v = 0;
+        galerie.classList.remove("galerie--saisie");
+      };
+      p.el.addEventListener("pointerup", lacher);
+      p.el.addEventListener("pointercancel", lacher);
+      p.el.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    });
+    var avant = performance.now();
+    (function tourner(t) {
+      var dt = Math.min(64, t - avant); avant = t;
+      pistes.forEach(function (p) {
+        var croisiere = calme ? 0 : p.sens * p.demi / 64000;
+        if (!p.tenu) {
+          p.v += (croisiere - p.v) * Math.min(1, dt * 0.003);
+          p.pos += p.v * dt;
+        }
+        p.pos = ((p.pos % p.demi) + p.demi) % p.demi;
+        p.el.style.transform = enLigne.matches ? "translate3d(" + (-p.pos) + "px,0,0)" : "translate3d(0," + (-p.pos) + "px,0)";
+      });
+      requestAnimationFrame(tourner);
+    })(avant);
+  }
+
   /* Halo qui suit la souris sur les cartes */
   document.querySelectorAll(".carte").forEach(function (c) {
     c.addEventListener("pointermove", function (e) {

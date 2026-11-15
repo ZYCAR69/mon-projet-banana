@@ -153,7 +153,9 @@ h3 { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.015em; line-height:
 }
 .galerie__col { display: flex; flex-direction: column; height: max-content; animation: monte 64s linear infinite; }
 .galerie__col--inverse { animation-direction: reverse; }
-.galerie:hover .galerie__col { animation-play-state: paused; }
+.galerie--libre .galerie__col { animation: none; cursor: grab; touch-action: pan-x; will-change: transform; }
+.galerie--libre img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; pointer-events: none; }
+.galerie--saisie .galerie__col { cursor: grabbing; }
 .galerie img {
   width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; margin-bottom: var(--ecart);
   border-radius: 22px; border: 1px solid var(--bord); box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.9);
@@ -434,3 +436,4 @@ fieldset.champ { border: 0; margin: 0; padding: 0; }
 .legal a { color: var(--cyan); }
 .a-completer { background: rgba(255, 196, 0, 0.18); color: #ffd666; padding: 1px 8px; border-radius: 6px; font-size: 0.92em; }
 .avis blockquote p { font-size: 1rem; }
+@media (max-width: 940px) { .galerie--libre .galerie__col { touch-action: pan-y; } }
