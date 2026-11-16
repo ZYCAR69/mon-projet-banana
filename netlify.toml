@@ -1,0 +1,8 @@
+# Construction du site par Netlify : le générateur lit le CRM (si CRM_URL et CRM_EXPORT_TOKEN
+# sont renseignés dans les réglages du site) puis écrit les pages dans site/.
+[build]
+  command = "pip install -r requirements.txt && python3 build.py"
+  publish = "site"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"

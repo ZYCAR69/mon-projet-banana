@@ -4,7 +4,7 @@
     python3 build.py            -> écrit le site dans site/
     python3 build.py DOSSIER    -> écrit une copie d'aperçu (envoi des formulaires désactivé)
 """
-import datetime, json, pathlib, re, shutil, sys, unicodedata
+import datetime, io, json, os, pathlib, re, shutil, sys, unicodedata, urllib.request
 
 RACINE = pathlib.Path(__file__).parent
 DOMAINE = "https://www.zycar.fr"
@@ -162,6 +162,43 @@ document.querySelectorAll("form").forEach(function (f) {
 </script>"""
 
 
+def donnees_crm():
+    """Stock en vente et véhicules vendus, lus dans le CRM ZYCAR au moment de la construction.
+
+    Il faut deux réglages chez l'hébergeur : CRM_URL (adresse du CRM) et CRM_EXPORT_TOKEN (le jeton
+    secret, identique au secret SITE_EXPORT_TOKEN du CRM). Sans eux, ou si le CRM ne répond pas,
+    le site utilise stock.txt et le dossier galerie/ comme avant.
+    """
+    if hasattr(donnees_crm, "cache"):
+        return donnees_crm.cache
+    donnees_crm.cache = None
+    url, jeton = os.environ.get("CRM_URL", "").rstrip("/"), os.environ.get("CRM_EXPORT_TOKEN", "")
+    if url.startswith("https://") and jeton:
+        try:
+            demande = urllib.request.Request(url + "/api/site/export", headers={"Authorization": "Bearer " + jeton})
+            with urllib.request.urlopen(demande, timeout=25) as reponse:
+                donnees_crm.cache = json.load(reponse)
+            print("CRM : {} véhicules en stock, {} vendus".format(len(donnees_crm.cache.get("stock", [])), len(donnees_crm.cache.get("galerie", []))))
+        except Exception as erreur:  # le site se construit quand même
+            print("CRM injoignable, données locales utilisées :", erreur)
+    return donnees_crm.cache
+
+
+def photo_crm(adresse, sortie):
+    """Télécharge une photo d'annonce du CRM et la met au format de la galerie. Renvoie True si c'est fait."""
+    if sortie.exists():
+        return True
+    try:
+        from PIL import Image, ImageOps
+        with urllib.request.urlopen(urllib.request.Request(adresse, headers={"User-Agent": "zycar-site"}), timeout=25) as reponse:
+            image = ImageOps.exif_transpose(Image.open(io.BytesIO(reponse.read(15_000_000)))).convert("RGB")
+        ImageOps.fit(image, (800, 600), Image.LANCZOS).save(sortie, quality=84)
+        return True
+    except Exception as erreur:
+        print("Photo du CRM ignorée :", adresse, erreur)
+        return False
+
+
 def galerie():
     """Lit le dossier galerie/ et prépare une photo 800 x 600 par véhicule vendu. Renvoie la liste (fichier, légende)."""
     source, cible = RACINE / "galerie", RACINE / "site" / "assets" / "galerie"
@@ -185,6 +222,18 @@ def galerie():
                 shutil.copy(photo, cible / nom)
         gardes.add(nom)
         resultat.append((nom, legende))
+    # puis les véhicules vendus enregistrés dans le CRM (sans doublon avec le dossier)
+    deja = {legende.lower() for _, legende in resultat}
+    for vehicule in (donnees_crm() or {}).get("galerie", []):
+        legende = str(vehicule.get("nom", "")).strip()[:60]
+        ident = re.sub(r"[^A-Za-z0-9]", "", str(vehicule.get("id", "")))[:40]
+        if not legende or not ident or legende.lower() in deja or not str(vehicule.get("photo", "")).startswith("https://"):
+            continue
+        nom = "crm-" + ident + ".webp"
+        if photo_crm(vehicule["photo"], cible / nom):
+            gardes.add(nom)
+            resultat.append((nom, legende))
+            deja.add(legende.lower())
     for ancien in cible.iterdir():
         if ancien.name not in gardes:
             ancien.unlink()
@@ -192,9 +241,21 @@ def galerie():
 
 
 def champ_stock(ident):
-    """Champ « véhicule concerné » : liste tirée de stock.txt, ou saisie libre si la liste est vide."""
-    lignes = [l.strip() for l in (RACINE / "stock.txt").read_text(encoding="utf-8").splitlines()]
-    stock = [l for l in lignes if l and not l.startswith("#")]
+    """Champ « véhicule concerné » : liste tirée du CRM (ou de stock.txt), saisie libre si elle est vide."""
+    crm = donnees_crm()
+    if crm is not None:
+        stock = []
+        for v in crm.get("stock", []):
+            texte = str(v.get("nom", "")).strip()[:90]
+            if v.get("annee"):
+                texte += " ({})".format(v["annee"])
+            if v.get("prix"):
+                texte += " · {:,} €".format(int(v["prix"])).replace(",", " ")
+            if texte:
+                stock.append(texte)
+    else:
+        lignes = [l.strip() for l in (RACINE / "stock.txt").read_text(encoding="utf-8").splitlines()]
+        stock = [l for l in lignes if l and not l.startswith("#")]
     if not stock:
         return ('<label for="{0}">Véhicule qui vous intéresse</label>\n            '
                 '<input id="{0}" name="vehicule" type="text" placeholder="Ex. la BMW Série 1 vue sur Leboncoin">').format(ident)
