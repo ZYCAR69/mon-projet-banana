@@ -242,14 +242,18 @@
   /* Estimation : la liste des modèles dépend de la marque */
   var MODELES = {
     "Abarth": ["500", "595", "695", "124 Spider"],
+    "Alpina": ["B3", "B4", "B5", "B6", "B7", "B8", "D3", "D4", "D5", "XB7", "XD3", "XD4"],
     "Alfa Romeo": ["Giulia", "Giulietta", "MiTo", "Stelvio", "Tonale", "4C"],
     "Alpine": ["A110", "A290"],
+    "Aston Martin": ["DB11", "DB12", "DBS", "DBX", "Vantage", "Rapide"],
     "Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "A8", "Q2", "Q3", "Q4 e-tron", "Q5", "Q7", "Q8", "e-tron", "TT", "R8", "S3", "RS3", "S4", "RS4", "S5", "RS5", "RS6", "RS7", "SQ5", "SQ7", "RS Q3", "RS Q8"],
+    "Bentley": ["Bentayga", "Continental GT", "Flying Spur"],
     "BMW": ["Série 1", "Série 2", "Série 3", "Série 4", "Série 5", "Série 6", "Série 7", "Série 8", "X1", "X2", "X3", "X4", "X5", "X6", "X7", "Z4", "i3", "i4", "iX", "iX3", "M2", "M3", "M4", "M5", "M8", "X3 M", "X5 M"],
     "Citroën": ["C1", "C3", "C3 Aircross", "C4", "C4 Picasso", "C5 Aircross", "C5 X", "Berlingo", "ë-C4"],
     "Cupra": ["Ateca", "Born", "Formentor", "Leon", "Tavascan", "Terramar"],
     "Dacia": ["Duster", "Jogger", "Logan", "Sandero", "Spring", "Bigster"],
     "DS": ["DS 3", "DS 4", "DS 7", "DS 9"],
+    "Ferrari": ["296", "488", "812", "F8", "Portofino", "Roma", "SF90", "Purosangue", "California"],
     "Fiat": ["500", "500X", "Panda", "Tipo", "Ducato"],
     "Ford": ["Fiesta", "Focus", "Puma", "Kuga", "Mustang", "Mustang Mach-E", "Ranger", "Transit"],
     "Honda": ["Civic", "Civic Type R", "CR-V", "HR-V", "Jazz"],
@@ -257,10 +261,12 @@
     "Jaguar": ["E-Pace", "F-Pace", "F-Type", "I-Pace", "XE", "XF"],
     "Jeep": ["Avenger", "Compass", "Renegade", "Wrangler", "Grand Cherokee"],
     "Kia": ["Picanto", "Rio", "Ceed", "ProCeed", "Stonic", "Niro", "Sportage", "Sorento", "EV6", "EV9", "Stinger"],
+    "Lamborghini": ["Huracán", "Urus", "Aventador", "Revuelto"],
     "Land Rover": ["Defender", "Discovery", "Discovery Sport", "Range Rover", "Range Rover Evoque", "Range Rover Sport", "Range Rover Velar"],
     "Lexus": ["CT", "IS", "NX", "RX", "UX", "LC"],
     "Maserati": ["Ghibli", "Grecale", "Levante", "Quattroporte", "GranTurismo"],
     "Mazda": ["2", "3", "CX-3", "CX-30", "CX-5", "CX-60", "MX-5"],
+    "McLaren": ["540C", "570S", "600LT", "720S", "750S", "Artura", "GT"],
     "Mercedes-Benz": ["Classe A", "Classe B", "Classe C", "Classe E", "Classe S", "CLA", "CLS", "GLA", "GLB", "GLC", "GLE", "GLS", "Classe G", "Classe V", "EQA", "EQB", "EQC", "EQE", "EQS", "AMG GT", "A 35 AMG", "A 45 AMG", "C 43 AMG", "C 63 AMG", "E 63 AMG"],
     "Mini": ["Mini 3 portes", "Mini 5 portes", "Cabrio", "Clubman", "Countryman", "John Cooper Works"],
     "Nissan": ["Micra", "Juke", "Qashqai", "X-Trail", "Leaf", "Ariya", "GT-R"],
@@ -277,11 +283,20 @@
     "Volkswagen": ["Polo", "Golf", "Golf GTI", "Golf R", "T-Cross", "T-Roc", "Tiguan", "Touareg", "Passat", "Arteon", "Touran", "ID.3", "ID.4", "ID.5", "Up", "Scirocco", "Transporter"],
     "Volvo": ["V40", "V60", "V90", "S60", "S90", "XC40", "XC60", "XC90", "EX30", "C40"]
   };
-  var marque = document.getElementById("e-marque-liste"), modele = document.getElementById("e-modele-liste");
-  if (marque && modele) {
-    var libre = document.getElementById("e-marque");
-    Object.keys(MODELES).forEach(function (m) { marque.add(new Option(m, m)); });
+  var marques = Object.keys(MODELES).sort(function (a, b) { return a.localeCompare(b, "fr"); });
+  document.querySelectorAll("select[data-modeles]").forEach(function (modele) {
+    var marque = document.getElementById(modele.getAttribute("data-modeles"));
+    var libre = document.getElementById(modele.getAttribute("data-precision"));
+    if (!marque) return;
+    marques.forEach(function (m) { marque.add(new Option(m, m)); });
     marque.add(new Option("Autre marque", "Autre marque"));
+    var preciser = function () {
+      var besoin = marque.value === "Autre marque" || modele.value === "Autre modèle";
+      if (!libre) return;
+      libre.closest(".champ").hidden = !besoin;
+      libre.required = besoin;
+      libre.disabled = !besoin;
+    };
     var remplir = function () {
       var liste = MODELES[marque.value] || [];
       modele.length = 0;
@@ -292,16 +307,10 @@
       modele.required = !!liste.length;
       preciser();
     };
-    var preciser = function () {
-      var besoin = marque.value === "Autre marque" || modele.value === "Autre modèle";
-      libre.closest(".champ").hidden = !besoin;
-      libre.required = besoin;
-      libre.disabled = !besoin;
-    };
     marque.addEventListener("change", remplir);
     modele.addEventListener("change", preciser);
     remplir();
-  }
+  });
 
   /* Halo qui suit la souris sur les cartes */
   document.querySelectorAll(".carte").forEach(function (c) {

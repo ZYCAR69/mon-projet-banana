@@ -82,39 +82,49 @@
           <p class="formulaire__titre formulaire__titre--premier">Le véhicule</p>
           <div class="champ">
             <label for="r-marque">Marque</label>
-            <select id="r-marque" name="marque" required>
+            <select id="r-marque" name="marque" data-marques required>
               <option value="">Choisir</option>
-              <option>Audi</option><option>BMW</option><option>Mercedes-Benz</option><option>Porsche</option><option>Volkswagen</option>
-              <option>Cupra</option><option>Seat</option><option>Škoda</option><option>Mini</option><option>Alpina</option><option>Alpine</option>
-              <option>Aston Martin</option><option>Ferrari</option><option>Jaguar</option><option>Lamborghini</option><option>Land Rover</option>
-              <option>Lexus</option><option>McLaren</option><option>Tesla</option><option>Autre marque</option>
             </select>
           </div>
           <div class="champ">
             <label for="r-modele">Modèle</label>
-            <input id="r-modele" name="modele" type="text" placeholder="Ex. A3 Sportback S line" required>
+            <select id="r-modele" name="modele" data-modeles="r-marque" data-precision="r-precision">
+              <option value="">Choisissez d'abord la marque</option>
+            </select>
+          </div>
+          <div class="champ champ--large">
+            <label for="r-precision">Précisez la marque et le modèle</label>
+            <input id="r-precision" name="marque-modele-precision" type="text" placeholder="Ex. Alpina B3 Touring">
           </div>
           <div class="champ">
             <label for="r-annee">Année minimum</label>
-            <input id="r-annee" name="annee-minimum" type="text" inputmode="numeric" placeholder="Ex. 2021">
+            <select id="r-annee" name="annee-minimum">
+              <option value="">Indifférent</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016</option><option>2015</option><option>2014</option><option>2013</option><option>2012</option><option>2011</option><option>2010</option><option>2009</option><option>2008</option><option>2007</option><option>2006</option><option>2005</option><option>2004</option><option>2003</option><option>2002</option><option>2001</option><option>2000</option>
+            </select>
           </div>
           <div class="champ">
             <label for="r-budget">Budget maximum</label>
-            <input id="r-budget" name="budget-maximum" type="text" inputmode="numeric" placeholder="Ex. 25 000 €">
+            <select id="r-budget" name="budget-maximum" required>
+              <option value="">Choisir</option><option>10 000 €</option><option>15 000 €</option><option>20 000 €</option><option>25 000 €</option><option>30 000 €</option><option>35 000 €</option><option>40 000 €</option><option>45 000 €</option><option>50 000 €</option><option>60 000 €</option><option>70 000 €</option><option>80 000 €</option><option>90 000 €</option><option>100 000 €</option><option>120 000 €</option><option>150 000 €</option><option>200 000 €</option><option>Plus de 200 000 €</option>
+            </select>
           </div>
           <div class="champ">
             <label for="r-km">Kilométrage maximum</label>
-            <input id="r-km" name="kilometrage-maximum" type="text" inputmode="numeric" placeholder="Ex. 80 000 km">
+            <select id="r-km" name="kilometrage-maximum">
+              <option value="">Indifférent</option><option>10 000 km</option><option>20 000 km</option><option>30 000 km</option><option>40 000 km</option><option>50 000 km</option><option>75 000 km</option><option>100 000 km</option><option>125 000 km</option><option>150 000 km</option><option>200 000 km</option>
+            </select>
           </div>
           <div class="champ">
             <label for="r-puissance">Puissance</label>
-            <input id="r-puissance" name="puissance" type="text" placeholder="Ex. 150 ch minimum">
+            <select id="r-puissance" name="puissance">
+              <option value="">Indifférent</option><option>Moins de 100 ch</option><option>100 à 150 ch</option><option>150 à 200 ch</option><option>200 à 250 ch</option><option>250 à 300 ch</option><option>300 à 400 ch</option><option>400 à 500 ch</option><option>Plus de 500 ch</option>
+            </select>
           </div>
           <div class="champ">
             <label for="r-energie">Énergie</label>
             <select id="r-energie" name="energie">
               <option value="">Indifférent</option>
-              <option>Essence</option><option>Diesel</option><option>Hybride</option><option>Électrique</option>
+              <option>Essence</option><option>Diesel</option><option>Hybride</option><option>Hybride rechargeable</option><option>Électrique</option><option>GPL ou E85</option>
             </select>
           </div>
           <div class="champ">
