@@ -312,6 +312,92 @@
     remplir();
   });
 
+  /* Fiche véhicule : galerie de photos, glissé au doigt, plein écran */
+  var visionneuse = null, vListe = [], vIndex = 0;
+  var ouvrirVisionneuse = function (liste, index) {
+    if (!window.HTMLDialogElement) return;
+    if (!visionneuse) {
+      visionneuse = document.createElement("dialog");
+      visionneuse.className = "visionneuse";
+      visionneuse.innerHTML = "<img alt=\"\"><div class=\"visionneuse__barre\"><button type=\"button\" data-v=\"-1\" aria-label=\"Précédente\">‹</button><span></span><button type=\"button\" data-v=\"1\" aria-label=\"Suivante\">›</button><button type=\"button\" data-v=\"0\" aria-label=\"Fermer\">✕</button></div>";
+      document.body.appendChild(visionneuse);
+      visionneuse.addEventListener("click", function (e) {
+        var b = e.target.closest("button");
+        if (e.target === visionneuse || (b && b.getAttribute("data-v") === "0")) { visionneuse.close(); return; }
+        if (b) montrerV(vIndex + Number(b.getAttribute("data-v")));
+      });
+      visionneuse.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") montrerV(vIndex - 1);
+        if (e.key === "ArrowRight") montrerV(vIndex + 1);
+      });
+      var x0 = null;
+      visionneuse.addEventListener("pointerdown", function (e) { x0 = e.clientX; });
+      visionneuse.addEventListener("pointerup", function (e) { if (x0 !== null && Math.abs(e.clientX - x0) > 50) montrerV(vIndex + (e.clientX < x0 ? 1 : -1)); x0 = null; });
+    }
+    vListe = liste;
+    montrerV(index);
+    visionneuse.showModal();
+  };
+  var montrerV = function (i) {
+    vIndex = (i + vListe.length) % vListe.length;
+    visionneuse.querySelector("img").src = vListe[vIndex];
+    visionneuse.querySelector("span").textContent = (vIndex + 1) + " / " + vListe.length;
+    var plusieurs = vListe.length > 1;
+    visionneuse.querySelectorAll("[data-v='1'], [data-v='-1']").forEach(function (b) { b.hidden = !plusieurs; });
+  };
+
+  document.querySelectorAll("[data-galerie-annonce]").forEach(function (g) {
+    var principale = g.querySelector("[data-principale]"), compteur = g.querySelector("[data-compteur]");
+    var vignettes = [].slice.call(g.querySelectorAll(".fiche-vignette"));
+    var liste = vignettes.map(function (v) { return v.querySelector("img").getAttribute("src"); }), courant = 0;
+    var montrer = function (i) {
+      courant = (i + liste.length) % liste.length;
+      principale.src = liste[courant];
+      compteur.textContent = (courant + 1) + " / " + liste.length;
+      vignettes.forEach(function (v, k) { v.classList.toggle("actif", k === courant); });
+      vignettes[courant].scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+    };
+    vignettes.forEach(function (v, k) { v.addEventListener("click", function () { montrer(k); }); });
+    g.querySelector("[data-prec]").addEventListener("click", function () { montrer(courant - 1); });
+    g.querySelector("[data-suiv]").addEventListener("click", function () { montrer(courant + 1); });
+    g.querySelector("[data-agrandir]").addEventListener("click", function () { ouvrirVisionneuse(liste, courant); });
+    if (liste.length < 2) g.querySelectorAll("[data-prec], [data-suiv]").forEach(function (b) { b.hidden = true; });
+    var zone = g.querySelector(".fiche-galerie__principale"), x0 = null, y0 = null;
+    zone.addEventListener("pointerdown", function (e) { x0 = e.clientX; y0 = e.clientY; });
+    zone.addEventListener("pointerup", function (e) {
+      if (x0 === null) return;
+      var dx = e.clientX - x0, dy = e.clientY - y0;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) montrer(courant + (dx < 0 ? 1 : -1));
+      else if (Math.abs(dx) < 6 && Math.abs(dy) < 6 && !e.target.closest("button")) ouvrirVisionneuse(liste, courant);
+      x0 = null;
+    });
+  });
+  document.querySelectorAll("[data-zoom]").forEach(function (b) {
+    b.addEventListener("click", function () { ouvrirVisionneuse([b.getAttribute("data-zoom")], 0); });
+  });
+
+  /* « Ce véhicule m'intéresse » : le formulaire de contact s'ouvre avec le véhicule déjà choisi */
+  document.querySelectorAll("a[data-vehicule]").forEach(function (a) {
+    a.addEventListener("click", function () {
+      try { sessionStorage.setItem("zycar-vehicule", a.getAttribute("data-vehicule")); } catch (e) {}
+    });
+  });
+  (function () {
+    var voulu = null;
+    try { voulu = new URLSearchParams(location.search).get("vehicule"); } catch (e) {}
+    if (!voulu) { try { voulu = sessionStorage.getItem("zycar-vehicule"); sessionStorage.removeItem("zycar-vehicule"); } catch (e) {} }
+    if (!voulu) return;
+    var formulaire = document.querySelector("form[name='contact'], form[name='demande']");
+    if (!formulaire) return;
+    var achat = formulaire.querySelector("input[data-cas='achat']");
+    if (achat) { achat.checked = true; achat.dispatchEvent(new Event("change", { bubbles: true })); }
+    var liste = formulaire.querySelector("select[name='vehicule']"), trouve = false;
+    if (liste) [].forEach.call(liste.options, function (o) { if (o.text === voulu) { liste.value = o.value || o.text; trouve = true; } });
+    else { var champ = formulaire.querySelector("input[name='vehicule']"); if (champ) { champ.value = voulu; trouve = true; } }
+    var message = formulaire.querySelector("textarea[name='message']");
+    if (message && !message.value) message.value = "Bonjour, je suis intéressé par : " + voulu + (trouve ? "." : " (véhicule réservé, merci de me prévenir s'il se libère).");
+  })();
+
   /* Halo qui suit la souris sur les cartes */
   document.querySelectorAll(".carte").forEach(function (c) {
     c.addEventListener("pointermove", function (e) {

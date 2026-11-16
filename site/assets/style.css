@@ -513,3 +513,83 @@ a.coord:hover b { color: var(--cyan); }
 .choix--pays { margin-top: 0; align-content: start; }
 .choix--pays span { padding: 8px 14px; font-size: 0.92rem; }
 @media (max-width: 700px) { .pays-grille { grid-template-columns: minmax(0, 1fr); } }
+
+/* Nos véhicules en vente : grille */
+.annonces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.annonce-carte { padding: 0; overflow: hidden; display: grid; grid-template-rows: auto 1fr; text-decoration: none; }
+.annonce-carte__image { position: relative; display: block; aspect-ratio: 4 / 3; background: var(--fond-2); overflow: hidden; }
+.annonce-carte__image img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--fluide); }
+.annonce-carte:hover .annonce-carte__image img { transform: scale(1.04); }
+.annonce-carte__vide { display: grid; place-items: center; height: 100%; font-family: var(--titre); font-weight: 700; color: var(--doux); letter-spacing: .2em; }
+.annonce-carte__corps { display: grid; gap: 8px; align-content: start; grid-template-rows: auto auto 1fr; padding: 20px 22px 22px; }
+.annonce-carte h3 { font-size: 1.2rem; }
+.annonce-carte__resume { color: var(--doux); font-size: .95rem; }
+.annonce-carte__bas { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-top: 8px; }
+.annonce-carte__prix { font-family: var(--titre); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.annonce-carte__lien { font-family: var(--titre); font-weight: 600; font-size: .95rem; color: var(--cyan); white-space: nowrap; }
+.annonce-badge { position: absolute; top: 12px; left: 12px; padding: 5px 12px; border-radius: 999px; background: #f5b83d; color: #1a1205; font-weight: 700; font-size: .82rem; }
+.annonce-badge--fiche { position: static; width: fit-content; }
+@media (max-width: 980px) { .annonces { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .annonces { grid-template-columns: minmax(0, 1fr); } }
+
+/* Fiche d'un véhicule */
+.fiche { padding-block: clamp(32px, 5vw, 64px) clamp(56px, 8vw, 104px); }
+.fiche .article__fil { margin-bottom: 20px; }
+.fiche-haut { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: start; }
+.fiche-infos { display: grid; gap: 14px; position: sticky; top: 104px; }
+.fiche-infos h1 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.08; }
+.fiche-resume { color: var(--doux); font-size: 1.05rem; }
+.fiche-prix { font-family: var(--titre); font-weight: 700; font-size: clamp(2.2rem, 4.4vw, 3rem); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.fiche-actions { display: grid; gap: 10px; }
+.fiche-actions .bouton { width: 100%; }
+.fiche-garanties { margin-top: 6px; font-size: .96rem; }
+.fiche-galerie { display: grid; gap: 10px; min-width: 0; }
+.fiche-galerie__principale { position: relative; aspect-ratio: 4 / 3; border-radius: 22px; overflow: hidden; border: 1px solid var(--bord); background: var(--fond-2); touch-action: pan-y; user-select: none; }
+.fiche-galerie__principale img { width: 100%; height: 100%; object-fit: cover; }
+.fiche-galerie__fleche, .fiche-galerie__agrandir { position: absolute; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--bord); background: rgba(4, 6, 10, 0.6); color: var(--texte); font-size: 1.6rem; line-height: 1; cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.fiche-galerie__fleche { top: 50%; transform: translateY(-50%); }
+.fiche-galerie__fleche--prec { left: 12px; }
+.fiche-galerie__fleche--suiv { right: 12px; }
+.fiche-galerie__agrandir { top: 12px; right: 12px; font-size: 1.1rem; }
+.fiche-galerie__compteur { position: absolute; bottom: 12px; right: 12px; padding: 4px 12px; border-radius: 999px; background: rgba(4, 6, 10, 0.65); font-size: .88rem; font-variant-numeric: tabular-nums; }
+.fiche-galerie__vignettes { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+.fiche-vignette { flex: none; width: 92px; aspect-ratio: 4 / 3; padding: 0; border-radius: 10px; overflow: hidden; border: 2px solid transparent; background: none; cursor: pointer; opacity: .6; transition: opacity .2s, border-color .2s; }
+.fiche-vignette img { width: 100%; height: 100%; object-fit: cover; }
+.fiche-vignette.actif, .fiche-vignette:hover { opacity: 1; border-color: var(--cyan); }
+.fiche-galerie--vide { aspect-ratio: 4 / 3; display: grid; place-items: center; border-radius: 22px; border: 1px dashed var(--bord); color: var(--doux); }
+.fiche-bloc { margin-top: clamp(32px, 5vw, 56px); display: grid; gap: 16px; }
+.fiche-bloc h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
+.fiche-bloc__sous { color: var(--doux); }
+.fiche-carac { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 0; border: 1px solid var(--bord); border-radius: 18px; overflow: hidden; background: var(--bord); }
+.fiche-carac div { display: grid; gap: 2px; padding: 14px 18px; background: var(--fond-2); }
+.fiche-carac dt { color: var(--doux); font-size: .85rem; }
+.fiche-carac dd { margin: 0; font-weight: 600; }
+.fiche-texte { white-space: pre-line; color: #c9d2db; max-width: 75ch; line-height: 1.75; }
+.fiche-equipements { margin: 0; padding: 0; list-style: none; columns: 3 220px; column-gap: 28px; }
+.fiche-equipements li { break-inside: avoid; padding: 7px 0 7px 22px; position: relative; border-bottom: 1px solid var(--bord); font-size: .96rem; }
+.fiche-equipements li::before { content: "✓"; position: absolute; left: 0; color: var(--cyan); font-size: .85rem; }
+.fiche-plus summary, .rapport-ok summary { cursor: pointer; color: var(--cyan); font-family: var(--titre); font-weight: 600; margin-top: 10px; }
+.fiche-plus[open] summary { margin-bottom: 8px; }
+.rapport-puces { display: flex; flex-wrap: wrap; gap: 10px; }
+.rapport-puce { padding: 7px 16px; border-radius: 999px; font-weight: 600; font-size: .95rem; }
+.rapport-puce--ok { background: rgba(52, 199, 120, 0.14); color: #6fe0a2; }
+.rapport-puce--defaut { background: rgba(245, 184, 61, 0.16); color: #f5c45f; }
+.rapport-remarque { color: #c9d2db; max-width: 75ch; }
+.rapport-defauts { display: grid; gap: 14px; }
+.rapport-defaut { display: grid; gap: 10px; padding: 18px 20px; border-radius: 18px; border: 1px solid var(--bord); border-left: 3px solid #f5b83d; background: var(--verre); }
+.rapport-defaut h4 { margin: 0; font-family: var(--titre); font-size: 1.05rem; }
+.rapport-defaut p { color: var(--doux); }
+.rapport-photos { display: flex; flex-wrap: wrap; gap: 10px; }
+.rapport-photo { width: 150px; aspect-ratio: 4 / 3; padding: 0; border: 1px solid var(--bord); border-radius: 12px; overflow: hidden; background: none; cursor: zoom-in; }
+.rapport-photo img { width: 100%; height: 100%; object-fit: cover; }
+.rapport-ok ul { margin: 12px 0 0; padding: 0; list-style: none; columns: 3 220px; column-gap: 28px; }
+.rapport-ok li { padding: 6px 0 6px 22px; position: relative; font-size: .95rem; color: #c9d2db; }
+.rapport-ok li::before { content: "✓"; position: absolute; left: 0; color: #6fe0a2; }
+.visionneuse { width: min(96vw, 1400px); max-width: none; max-height: 94vh; padding: 0; border: 0; background: transparent; }
+.visionneuse::backdrop { background: rgba(2, 4, 8, 0.92); }
+.visionneuse img { width: 100%; max-height: 86vh; object-fit: contain; border-radius: 14px; }
+.visionneuse__barre { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 10px; color: var(--texte); }
+.visionneuse button { min-width: 48px; min-height: 48px; border-radius: 999px; border: 1px solid var(--bord); background: rgba(255,255,255,.06); color: var(--texte); font: inherit; font-size: 1.3rem; cursor: pointer; }
+.apercu-demo { position: relative; z-index: 31; margin: 12px auto 0; width: fit-content; max-width: calc(100% - 32px); padding: 8px 16px; border-radius: 12px; background: #f5b83d; color: #1a1205; font-weight: 600; font-size: .92rem; text-align: center; }
+@media (max-width: 980px) { .fiche-haut { grid-template-columns: minmax(0, 1fr); } .fiche-infos { position: static; } .fiche-carac { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 460px) { .fiche-carac { grid-template-columns: minmax(0, 1fr); } .fiche-vignette { width: 76px; } }

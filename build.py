@@ -6,6 +6,8 @@
 """
 import datetime, io, json, os, pathlib, re, shutil, sys, unicodedata, urllib.request
 
+import annonces
+
 RACINE = pathlib.Path(__file__).parent
 DOMAINE = "https://www.zycar.fr"
 DONNEES = {
@@ -121,7 +123,7 @@ GABARIT = """<!DOCTYPE html>
         <p class="pied__titre">Contact</p>
         <ul>
           <li><a href="tel:+33783198821">07 83 19 88 21</a></li>
-          <li><a href="mailto:contact@zycar.fr">contact@zycar.fr</a></li>
+          <li><a href="mailto:{{{{courriel}}}}">{{{{courriel}}}}</a></li>
           <li><a href="https://www.google.com/maps/search/?api=1&amp;query=ZYCAR+Saint-Georges-de-Reneins" target="_blank" rel="noopener" data-itineraire>Saint-Georges-de-Reneins (69)</a></li>
         </ul>
       </div>
@@ -172,6 +174,10 @@ def donnees_crm():
     if hasattr(donnees_crm, "cache"):
         return donnees_crm.cache
     donnees_crm.cache = None
+    demo = os.environ.get("SITE_DEMO_JSON", "")
+    if demo:  # aperçu uniquement : données d'exemple, jamais utilisées sur le site en ligne
+        donnees_crm.cache = json.loads(pathlib.Path(demo).read_text(encoding="utf-8"))
+        return donnees_crm.cache
     url, jeton = os.environ.get("CRM_URL", "").rstrip("/"), os.environ.get("CRM_EXPORT_TOKEN", "")
     if url.startswith("https://") and jeton:
         try:
@@ -273,10 +279,13 @@ def figures(photos):
 def construire(sortie, apercu=False):
     sortie.mkdir(parents=True, exist_ok=True)
     photos = galerie()
+    vehicules = annonces.preparer(donnees_crm(), RACINE / "site" / "assets", demo=bool(os.environ.get("SITE_DEMO_JSON")))
     if sortie != RACINE / "site":
         shutil.copytree(RACINE / "site" / "assets", sortie / "assets", dirs_exist_ok=True)
-    for page in sorted((RACINE / "src" / "pages").glob("*.html")):
-        texte = page.read_text(encoding="utf-8")
+    sources = [(p.name, p.read_text(encoding="utf-8")) for p in sorted((RACINE / "src" / "pages").glob("*.html"))]
+    sources += [(v["page"], annonces.page(v, DOMAINE)) for v in vehicules]
+    for nom_page, texte in sources:
+        page = pathlib.PurePath(nom_page)
         titre = re.search(r"<!-- titre: (.*?) -->", texte).group(1)
         description = re.search(r"<!-- description: (.*?) -->", texte).group(1)
         univers = re.search(r"<!-- univers: (.*?) -->", texte)
@@ -285,10 +294,12 @@ def construire(sortie, apercu=False):
         contenu = contenu.replace("<!-- europe -->", (RACINE / "src" / "europe.svg").read_text(encoding="utf-8"))
         contenu = re.sub(r"<!-- stock:([\w-]+) -->", lambda m: champ_stock(m.group(1)), contenu)
         contenu = re.sub(r"<!-- galerie:(\d+) -->", lambda m: figures(photos[:int(m.group(1))]), contenu)
+        contenu = contenu.replace("<!-- annonces -->", annonces.grille(vehicules))
         menu = "\n".join(
             '        <a href="{}"{}>{}</a>'.format(
                 lien.replace("index.html", "") if page.name == "index.html" and "#" in lien else lien,
-                ' aria-current="page"' if lien == page.name or (lien == "blog.html" and page.name.startswith("blog-")) else "", nom)
+                ' aria-current="page"' if lien == page.name or (lien == "blog.html" and page.name.startswith("blog-"))
+                or (lien == "vehicules.html" and page.name.startswith("vehicule-")) else "", nom)
             for lien, nom in MENU)
         url = DOMAINE + "/" + ("" if page.name == "index.html" else page.name)
         html = GABARIT.format(url=url, partage=DOMAINE + "/assets/partage.jpg",
@@ -296,11 +307,20 @@ def construire(sortie, apercu=False):
                               robots='<meta name="robots" content="noindex">\n' if page.name in HORS_INDEX else "",
                               univers=' data-univers="%s"' % univers.group(1) if univers else "", titre=titre, description=description, menu=menu, contenu=contenu,
                               extra=APERCU if apercu else "")
+        # adresse e-mail de contact : réglage SITE_COURRIEL chez l'hébergeur, jamais écrite dans le code
+        courriel = os.environ.get("SITE_COURRIEL", "").strip()
+        if courriel:
+            html = html.replace("{{courriel}}", courriel)
+        else:
+            html = html.replace("mailto:{{courriel}}", "contact.html").replace("{{courriel}}", "le formulaire de contact")
         (sortie / page.name).write_text(html, encoding="utf-8")
         print("écrit", sortie / page.name)
     # plan du site et consignes pour les moteurs de recherche
     jour = datetime.date.today().isoformat()
-    pages = [p.name for p in sorted((RACINE / "src" / "pages").glob("*.html")) if p.name not in HORS_INDEX]
+    pages = [n for n, _ in sources if n not in HORS_INDEX]
+    for ancienne in sortie.glob("vehicule-*.html"):  # véhicules vendus ou retirés
+        if ancienne.name not in {n for n, _ in sources}:
+            ancienne.unlink()
     liens = "".join("  <url><loc>{}/{}</loc><lastmod>{}</lastmod></url>\n".format(DOMAINE, "" if n == "index.html" else n, jour) for n in pages)
     (sortie / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + liens + "</urlset>\n", encoding="utf-8")
     shutil.copy(RACINE / "src" / "robots.txt", sortie / "robots.txt")
