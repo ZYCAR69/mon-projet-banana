@@ -33,12 +33,24 @@
           <fieldset class="champ champ--large">
             <legend>Votre message concerne</legend>
             <div class="choix">
-              <label><input id="c-sujet-1" type="radio" name="sujet" value="Véhicule en stock" checked><span>Acheter un véhicule en stock</span></label>
-              <label><input id="c-sujet-2" type="radio" name="sujet" value="Import sur mandat"><span>Importer un véhicule</span></label>
-              <label><input id="c-sujet-4" type="radio" name="sujet" value="Vente - rachat ou dépôt-vente"><span>Vendre ma voiture</span></label>
-              <label><input id="c-sujet-3" type="radio" name="sujet" value="Autre question"><span>Autre question</span></label>
+              <label><input id="c-sujet-1" data-cas="achat" type="radio" name="sujet" value="Véhicule en stock" checked><span>Acheter un véhicule en stock</span></label>
+              <label><input id="c-sujet-2" data-cas="import" type="radio" name="sujet" value="Import sur mandat"><span>Importer un véhicule</span></label>
+              <label><input id="c-sujet-4" data-cas="vente" type="radio" name="sujet" value="Vente - rachat ou dépôt-vente"><span>Vendre ma voiture</span></label>
+              <label><input id="c-sujet-3" data-cas="autre" type="radio" name="sujet" value="Autre question"><span>Autre question</span></label>
             </div>
           </fieldset>
+          <div class="champ champ--large" data-si="achat">
+            <!-- stock:c-vehicule -->
+            <p class="champ__aide">Tout notre stock, avec photos et prix, est sur <a href="https://www.leboncoin.fr/boutique/6770880/zycar.htm" target="_blank" rel="noopener">notre boutique Leboncoin</a>.</p>
+          </div>
+          <div class="champ champ--large renvoi" data-si="import">
+            <p>Pour une recherche précise, le formulaire dédié nous donne tous les critères utiles.</p>
+            <a class="bouton bouton--verre" href="recherche.html">Décrire ma recherche <span class="fleche" aria-hidden="true">→</span></a>
+          </div>
+          <div class="champ champ--large renvoi" data-si="vente">
+            <p>Pour une estimation, décrivez votre voiture dans le formulaire dédié : trois minutes suffisent.</p>
+            <a class="bouton bouton--verre" href="vendre.html#estimation">Faire estimer ma voiture <span class="fleche" aria-hidden="true">→</span></a>
+          </div>
           <div class="champ">
             <label for="c-nom">Nom et prénom</label>
             <input id="c-nom" name="nom" type="text" autocomplete="name" required>

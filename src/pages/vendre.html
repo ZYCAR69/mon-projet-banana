@@ -137,12 +137,30 @@
             <input id="e-immat" name="immatriculation" type="text" placeholder="Ex. AB-123-CD" autocapitalize="characters">
           </div>
           <div class="champ">
-            <label for="e-marque">Marque et modèle</label>
-            <input id="e-marque" name="marque-modele" type="text" placeholder="Ex. BMW Série 1 118i M Sport" required>
+            <label for="e-marque-liste">Marque</label>
+            <select id="e-marque-liste" name="marque" required>
+              <option value="">Choisir</option>
+            </select>
+          </div>
+          <div class="champ">
+            <label for="e-modele-liste">Modèle</label>
+            <select id="e-modele-liste" name="modele">
+              <option value="">Choisissez d'abord la marque</option>
+            </select>
+          </div>
+          <div class="champ champ--large">
+            <label for="e-marque">Précisez la marque et le modèle</label>
+            <input id="e-marque" name="marque-modele-precision" type="text" placeholder="Ex. Alpina B3 Touring">
+          </div>
+          <div class="champ">
+            <label for="e-version">Version ou finition (facultatif)</label>
+            <input id="e-version" name="version" type="text" placeholder="Ex. 118i M Sport">
           </div>
           <div class="champ">
             <label for="e-annee">Année de mise en circulation</label>
-            <input id="e-annee" name="annee" type="text" inputmode="numeric" placeholder="Ex. 2020" required>
+            <select id="e-annee" name="annee" required>
+              <option value="">Choisir</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016</option><option>2015</option><option>2014</option><option>2013</option><option>2012</option><option>2011</option><option>2010</option><option>2009</option><option>2008</option><option>2007</option><option>2006</option><option>2005</option><option>2004</option><option>2003</option><option>2002</option><option>2001</option><option>2000</option><option>1999</option><option>1998</option><option>1997</option><option>1996</option><option>1995</option><option>Avant 1995</option>
+            </select>
           </div>
           <div class="champ">
             <label for="e-km">Kilométrage</label>
@@ -150,13 +168,15 @@
           </div>
           <div class="champ">
             <label for="e-energie">Énergie</label>
-            <select id="e-energie" name="energie">
-              <option>Essence</option><option>Diesel</option><option>Hybride</option><option>Électrique</option>
+            <select id="e-energie" name="energie" required>
+              <option value="">Choisir</option>
+              <option>Essence</option><option>Diesel</option><option>Hybride</option><option>Hybride rechargeable</option><option>Électrique</option><option>GPL ou E85</option>
             </select>
           </div>
           <div class="champ">
             <label for="e-boite">Boîte de vitesses</label>
-            <select id="e-boite" name="boite">
+            <select id="e-boite" name="boite" required>
+              <option value="">Choisir</option>
               <option>Automatique</option><option>Manuelle</option>
             </select>
           </div>

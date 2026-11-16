@@ -89,6 +89,7 @@ GABARIT = """<!DOCTYPE html>
       <div>
         <img src="assets/logo-zycar.webp" alt="ZYCAR" width="720" height="232">
         <p>Achat, import et dépôt-vente de véhicules.</p>
+        <a class="badge-google" href="https://share.google/V1jGb4gd2XNNTgvDA" target="_blank" rel="noopener" aria-label="Voir les avis ZYCAR sur Google"><svg viewBox="0 0 48 48" width="26" height="26" aria-hidden="true"><path fill="#EA4335" d="M24 9.500c3.540 0 6.710 1.220 9.210 3.600l6.850-6.850C35.900 2.380 30.470 0 24 0 14.620 0 6.510 5.380 2.560 13.220l7.980 6.190C12.430 13.720 17.740 9.500 24 9.500z"/><path fill="#4285F4" d="M46.980 24.550c0-1.570-.150-3.090-.380-4.550H24v9.020h12.940c-.580 2.960-2.260 5.480-4.780 7.180l7.730 6c4.510-4.180 7.090-10.360 7.090-17.650z"/><path fill="#FBBC05" d="M10.530 28.590c-.480-1.450-.760-2.990-.760-4.590s.270-3.140.760-4.590l-7.980-6.190C.920 16.460 0 20.120 0 24c0 3.880.920 7.540 2.560 10.780l7.970-6.190z"/><path fill="#34A853" d="M24 48c6.480 0 11.930-2.130 15.890-5.810l-7.730-6c-2.150 1.450-4.920 2.300-8.160 2.300-6.260 0-11.570-4.220-13.470-9.910l-7.980 6.190C6.510 42.620 14.620 48 24 48z"/></svg><span><b>Avis Google</b><!-- note-google --><small>Voir notre fiche</small></span></a>
       </div>
       <div>
         <p class="pied__titre">Acheter</p>
@@ -190,6 +191,18 @@ def galerie():
     return resultat
 
 
+def champ_stock(ident):
+    """Champ « véhicule concerné » : liste tirée de stock.txt, ou saisie libre si la liste est vide."""
+    lignes = [l.strip() for l in (RACINE / "stock.txt").read_text(encoding="utf-8").splitlines()]
+    stock = [l for l in lignes if l and not l.startswith("#")]
+    if not stock:
+        return ('<label for="{0}">Véhicule qui vous intéresse</label>\n            '
+                '<input id="{0}" name="vehicule" type="text" placeholder="Ex. la BMW Série 1 vue sur Leboncoin">').format(ident)
+    options = "".join("<option>{}</option>".format(v.replace("&", "&amp;").replace("<", "&lt;")) for v in stock)
+    return ('<label for="{0}">Véhicule qui vous intéresse</label>\n            <select id="{0}" name="vehicule">'
+            '<option value="">Choisir dans notre stock</option>{1}<option>Je ne sais pas encore</option></select>').format(ident, options)
+
+
 def figures(photos):
     return "\n".join(
         '        <figure class="r"><img src="assets/galerie/{0}" alt="{1} vendue par ZYCAR" width="800" height="600" '
@@ -208,6 +221,8 @@ def construire(sortie, apercu=False):
         univers = re.search(r"<!-- univers: (.*?) -->", texte)
         contenu = re.sub(r"<!-- (titre|description|univers): .*? -->\n", "", texte)
         contenu = contenu.replace("<!-- galerie -->", figures(photos))
+        contenu = contenu.replace("<!-- europe -->", (RACINE / "src" / "europe.svg").read_text(encoding="utf-8"))
+        contenu = re.sub(r"<!-- stock:([\w-]+) -->", lambda m: champ_stock(m.group(1)), contenu)
         contenu = re.sub(r"<!-- galerie:(\d+) -->", lambda m: figures(photos[:int(m.group(1))]), contenu)
         menu = "\n".join(
             '        <a href="{}"{}>{}</a>'.format(

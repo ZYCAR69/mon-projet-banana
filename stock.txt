@@ -1,0 +1,3 @@
+# Véhicules actuellement en stock, proposés dans les formulaires de contact.
+# Un véhicule par ligne, par exemple :  BMW Série 1 118i M Sport (2020)
+# Les lignes qui commencent par # sont ignorées. Laissez la liste vide si le stock n'est pas renseigné.

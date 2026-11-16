@@ -189,6 +189,120 @@
     cadre.innerHTML = "<iframe title=\"Carte : ZYCAR à Saint-Georges-de-Reneins\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\" src=\"https://www.google.com/maps?q=" + encodeURIComponent(LIEU_GOOGLE) + "&z=12&output=embed\"></iframe>";
   });
 
+  /* Formulaires de contact : les champs s'adaptent au sujet choisi */
+  document.querySelectorAll("form").forEach(function (f) {
+    var blocs = f.querySelectorAll("[data-si]");
+    if (!blocs.length) return;
+    var adapter = function () {
+      var choisi = f.querySelector("input[data-cas]:checked"), cas = choisi ? choisi.getAttribute("data-cas") : "";
+      blocs.forEach(function (b) {
+        var visible = b.getAttribute("data-si") === cas;
+        b.hidden = !visible;
+        b.querySelectorAll("input, select, textarea").forEach(function (c) { c.disabled = !visible; });
+      });
+    };
+    f.addEventListener("change", function (e) { if (e.target.hasAttribute("data-cas")) adapter(); });
+    adapter();
+  });
+
+  /* Recherche : choix des pays sur la carte d'Europe */
+  var europe = document.querySelector(".europe");
+  if (europe) {
+    var zone = europe.closest("fieldset"), partout = zone.querySelector("input[data-partout]");
+    var cases = [].slice.call(zone.querySelectorAll("input[name='pays']:not([data-partout])"));
+    var peindre = function () {
+      europe.querySelectorAll(".pays").forEach(function (p) {
+        var c = zone.querySelector("input[value='" + p.getAttribute("data-pays") + "']");
+        var on = !!(c && c.checked);
+        p.classList.toggle("choisi", on);
+        p.setAttribute("aria-checked", on);
+      });
+      europe.classList.toggle("europe--partout", partout.checked);
+    };
+    zone.addEventListener("change", function (e) {
+      if (e.target === partout) { if (partout.checked) cases.forEach(function (c) { c.checked = false; }); }
+      else if (e.target.checked) partout.checked = false;
+      if (!cases.some(function (c) { return c.checked; })) partout.checked = true;
+      peindre();
+    });
+    var basculer = function (p) {
+      var c = zone.querySelector("input[value='" + p.getAttribute("data-pays") + "']");
+      if (!c) return;
+      c.checked = !c.checked;
+      c.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    europe.addEventListener("click", function (e) { var p = e.target.closest(".pays"); if (p) basculer(p); });
+    europe.addEventListener("keydown", function (e) {
+      var p = e.target.closest(".pays");
+      if (p && (e.key === " " || e.key === "Enter")) { e.preventDefault(); basculer(p); }
+    });
+    peindre();
+  }
+
+  /* Estimation : la liste des modèles dépend de la marque */
+  var MODELES = {
+    "Abarth": ["500", "595", "695", "124 Spider"],
+    "Alfa Romeo": ["Giulia", "Giulietta", "MiTo", "Stelvio", "Tonale", "4C"],
+    "Alpine": ["A110", "A290"],
+    "Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "A8", "Q2", "Q3", "Q4 e-tron", "Q5", "Q7", "Q8", "e-tron", "TT", "R8", "S3", "RS3", "S4", "RS4", "S5", "RS5", "RS6", "RS7", "SQ5", "SQ7", "RS Q3", "RS Q8"],
+    "BMW": ["Série 1", "Série 2", "Série 3", "Série 4", "Série 5", "Série 6", "Série 7", "Série 8", "X1", "X2", "X3", "X4", "X5", "X6", "X7", "Z4", "i3", "i4", "iX", "iX3", "M2", "M3", "M4", "M5", "M8", "X3 M", "X5 M"],
+    "Citroën": ["C1", "C3", "C3 Aircross", "C4", "C4 Picasso", "C5 Aircross", "C5 X", "Berlingo", "ë-C4"],
+    "Cupra": ["Ateca", "Born", "Formentor", "Leon", "Tavascan", "Terramar"],
+    "Dacia": ["Duster", "Jogger", "Logan", "Sandero", "Spring", "Bigster"],
+    "DS": ["DS 3", "DS 4", "DS 7", "DS 9"],
+    "Fiat": ["500", "500X", "Panda", "Tipo", "Ducato"],
+    "Ford": ["Fiesta", "Focus", "Puma", "Kuga", "Mustang", "Mustang Mach-E", "Ranger", "Transit"],
+    "Honda": ["Civic", "Civic Type R", "CR-V", "HR-V", "Jazz"],
+    "Hyundai": ["i10", "i20", "i20 N", "i30", "i30 N", "Kona", "Tucson", "Santa Fe", "Ioniq 5", "Ioniq 6"],
+    "Jaguar": ["E-Pace", "F-Pace", "F-Type", "I-Pace", "XE", "XF"],
+    "Jeep": ["Avenger", "Compass", "Renegade", "Wrangler", "Grand Cherokee"],
+    "Kia": ["Picanto", "Rio", "Ceed", "ProCeed", "Stonic", "Niro", "Sportage", "Sorento", "EV6", "EV9", "Stinger"],
+    "Land Rover": ["Defender", "Discovery", "Discovery Sport", "Range Rover", "Range Rover Evoque", "Range Rover Sport", "Range Rover Velar"],
+    "Lexus": ["CT", "IS", "NX", "RX", "UX", "LC"],
+    "Maserati": ["Ghibli", "Grecale", "Levante", "Quattroporte", "GranTurismo"],
+    "Mazda": ["2", "3", "CX-3", "CX-30", "CX-5", "CX-60", "MX-5"],
+    "Mercedes-Benz": ["Classe A", "Classe B", "Classe C", "Classe E", "Classe S", "CLA", "CLS", "GLA", "GLB", "GLC", "GLE", "GLS", "Classe G", "Classe V", "EQA", "EQB", "EQC", "EQE", "EQS", "AMG GT", "A 35 AMG", "A 45 AMG", "C 43 AMG", "C 63 AMG", "E 63 AMG"],
+    "Mini": ["Mini 3 portes", "Mini 5 portes", "Cabrio", "Clubman", "Countryman", "John Cooper Works"],
+    "Nissan": ["Micra", "Juke", "Qashqai", "X-Trail", "Leaf", "Ariya", "GT-R"],
+    "Opel": ["Corsa", "Astra", "Mokka", "Crossland", "Grandland", "Insignia"],
+    "Peugeot": ["108", "208", "308", "408", "508", "2008", "3008", "5008", "Rifter", "RCZ"],
+    "Porsche": ["911", "718 Boxster", "718 Cayman", "Cayenne", "Macan", "Panamera", "Taycan"],
+    "Renault": ["Twingo", "Clio", "Captur", "Mégane", "Mégane RS", "Arkana", "Austral", "Scénic", "Kadjar", "Espace", "Zoé", "Trafic"],
+    "Seat": ["Ibiza", "Leon", "Arona", "Ateca", "Tarraco"],
+    "Škoda": ["Fabia", "Scala", "Octavia", "Superb", "Kamiq", "Karoq", "Kodiaq", "Enyaq"],
+    "Smart": ["Fortwo", "Forfour", "#1", "#3"],
+    "Suzuki": ["Swift", "Ignis", "Vitara", "S-Cross", "Jimny"],
+    "Tesla": ["Model 3", "Model S", "Model X", "Model Y"],
+    "Toyota": ["Aygo", "Yaris", "Yaris Cross", "Corolla", "C-HR", "RAV4", "GR Yaris", "Supra", "Land Cruiser"],
+    "Volkswagen": ["Polo", "Golf", "Golf GTI", "Golf R", "T-Cross", "T-Roc", "Tiguan", "Touareg", "Passat", "Arteon", "Touran", "ID.3", "ID.4", "ID.5", "Up", "Scirocco", "Transporter"],
+    "Volvo": ["V40", "V60", "V90", "S60", "S90", "XC40", "XC60", "XC90", "EX30", "C40"]
+  };
+  var marque = document.getElementById("e-marque-liste"), modele = document.getElementById("e-modele-liste");
+  if (marque && modele) {
+    var libre = document.getElementById("e-marque");
+    Object.keys(MODELES).forEach(function (m) { marque.add(new Option(m, m)); });
+    marque.add(new Option("Autre marque", "Autre marque"));
+    var remplir = function () {
+      var liste = MODELES[marque.value] || [];
+      modele.length = 0;
+      modele.add(new Option(liste.length ? "Choisir" : (marque.value ? "Précisez ci-dessous" : "Choisissez d'abord la marque"), ""));
+      liste.forEach(function (m) { modele.add(new Option(m, m)); });
+      if (liste.length) modele.add(new Option("Autre modèle", "Autre modèle"));
+      modele.disabled = !liste.length;
+      modele.required = !!liste.length;
+      preciser();
+    };
+    var preciser = function () {
+      var besoin = marque.value === "Autre marque" || modele.value === "Autre modèle";
+      libre.closest(".champ").hidden = !besoin;
+      libre.required = besoin;
+      libre.disabled = !besoin;
+    };
+    marque.addEventListener("change", remplir);
+    modele.addEventListener("change", preciser);
+    remplir();
+  }
+
   /* Halo qui suit la souris sur les cartes */
   document.querySelectorAll(".carte").forEach(function (c) {
     c.addEventListener("pointermove", function (e) {

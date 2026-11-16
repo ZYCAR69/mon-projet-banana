@@ -18,7 +18,7 @@
           <h2 class="r">Comment ça marche</h2>
           <ul class="liste r" style="--d:.08s">
             <li>Vous envoyez ce formulaire</li>
-            <li>Nous sélectionnons des offres en Allemagne et vous les envoyons par e-mail</li>
+            <li>Nous sélectionnons des offres dans les pays choisis et vous les envoyons par e-mail</li>
             <li>Vous choisissez, nous faisons expertiser le véhicule</li>
             <li>Vous ne payez qu'une fois toutes les vérifications faites</li>
           </ul>
@@ -78,6 +78,18 @@
             <label for="r-options">Options et particularités souhaitées</label>
             <textarea id="r-options" name="options" placeholder="Boîte automatique, toit ouvrant, caméra de recul, sièges chauffants…"></textarea>
           </div>
+
+          <p class="formulaire__titre">Les pays de recherche</p>
+          <fieldset class="champ champ--large pays-zone">
+            <legend>Touchez un ou plusieurs pays sur la carte, ou laissez « Peu importe »</legend>
+            <div class="pays-grille">
+<!-- europe -->
+              <div class="choix choix--pays">
+                <label><input id="r-pays-0" type="checkbox" name="pays" value="Peu importe" data-partout checked><span>Peu importe</span></label>
+                <label><input id="r-pays-1" type="checkbox" name="pays" value="Allemagne"><span>Allemagne</span></label><label><input id="r-pays-2" type="checkbox" name="pays" value="Belgique"><span>Belgique</span></label><label><input id="r-pays-3" type="checkbox" name="pays" value="Pays-Bas"><span>Pays-Bas</span></label><label><input id="r-pays-4" type="checkbox" name="pays" value="Luxembourg"><span>Luxembourg</span></label><label><input id="r-pays-5" type="checkbox" name="pays" value="Suisse"><span>Suisse</span></label><label><input id="r-pays-6" type="checkbox" name="pays" value="Autriche"><span>Autriche</span></label><label><input id="r-pays-7" type="checkbox" name="pays" value="Italie"><span>Italie</span></label><label><input id="r-pays-8" type="checkbox" name="pays" value="Espagne"><span>Espagne</span></label><label><input id="r-pays-9" type="checkbox" name="pays" value="Portugal"><span>Portugal</span></label><label><input id="r-pays-10" type="checkbox" name="pays" value="Danemark"><span>Danemark</span></label><label><input id="r-pays-11" type="checkbox" name="pays" value="Suède"><span>Suède</span></label><label><input id="r-pays-12" type="checkbox" name="pays" value="Pologne"><span>Pologne</span></label><label><input id="r-pays-13" type="checkbox" name="pays" value="Tchéquie"><span>Tchéquie</span></label>
+              </div>
+            </div>
+          </fieldset>
 
           <p class="formulaire__titre">La formule</p>
           <fieldset class="champ champ--large">
