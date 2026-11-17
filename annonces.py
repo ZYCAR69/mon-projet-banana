@@ -226,6 +226,29 @@ def bloc_equipements(a):
     return '      <section class="fiche-bloc r"><h2>Équipements et options</h2>{}</section>'.format(contenu)
 
 
+def date_fr(iso):
+    j = (iso or "")[:10].split("-")
+    return "{}/{}/{}".format(j[2], j[1], j[0]) if len(j) == 3 else ""
+
+
+def bloc_documents(a):
+    """Pièces disponibles sur demande (carnet, factures, expertise, CT). Les fichiers ne sont jamais publiés."""
+    docs = a.get("documents") or []
+    if not docs:
+        return ""
+    cartes = "".join(
+        '<li class="fiche-doc"><span class="fiche-doc__icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span>'
+        '<span><b>{}</b><small>{}</small></span></li>'.format(esc(d.get("piece")), esc("Disponible" + (" · " + date_fr(d["date"]) if d.get("date") else "")))
+        for d in docs)
+    pieces = ", ".join(d.get("piece", "").lower() for d in docs)
+    return '''      <section class="fiche-bloc r" id="documents">
+        <h2>Documents du véhicule</h2>
+        <p class="fiche-bloc__sous">Ces pièces sont disponibles. Nous vous les envoyons sur simple demande, les informations personnelles des anciens propriétaires masquées.</p>
+        <ul class="fiche-docs">{cartes}</ul>
+        <p><a class="bouton bouton--verre" href="contact.html" data-vehicule="{stock}" data-documents="{pieces}">Recevoir ces documents <span class="fleche" aria-hidden="true">→</span></a></p>
+      </section>'''.format(cartes=cartes, stock=esc(a["stock"]), pieces=esc(pieces))
+
+
 def donnees_structurees(a, domaine):
     car = {
         "@context": "https://schema.org", "@type": "Car", "name": a["titre"], "brand": {"@type": "Brand", "name": a.get("marque")},
@@ -268,7 +291,7 @@ def page(a, domaine):
             {leboncoin}
           </div>
           <ul class="liste fiche-garanties">
-            <li>Véhicule contrôlé, rapport d'état ci-dessous</li>
+            <li>Véhicule contrôlé, rapport d'état ci-dessous</li>{garantie_docs}
             <li>Immatriculé en France, démarches faites</li>
             <li>Essai sur rendez-vous à Saint-Georges-de-Reneins</li>
           </ul>
@@ -285,6 +308,7 @@ def page(a, domaine):
 {historique}
 {equipements}
 {rapport}
+{documents}
 
       <div class="carte appel r" style="margin-top:28px">
         <div>
@@ -304,5 +328,7 @@ def page(a, domaine):
            titre=esc(a["titre"]), resume=esc(resume(a)), prix=esc(prix(a)), stock=esc(a["stock"]),
            cta="Être prévenu s'il se libère" if reserve else "Ce véhicule m'intéresse", leboncoin=leboncoin,
            carac=caracteristiques(a), description_bloc=description_bloc, historique=historique,
-           equipements=bloc_equipements(a), rapport=bloc_rapport(a), ld=donnees_structurees(a, domaine))
+           equipements=bloc_equipements(a), rapport=bloc_rapport(a), documents=bloc_documents(a), ld=donnees_structurees(a, domaine),
+           garantie_docs=('\n            <li>{} disponible{}</li>'.format(esc(", ".join(d["piece"] for d in a["documents"][:2])), "s" if len(a["documents"][:2]) > 1 else "")
+                          if a.get("documents") else ""))
     return corps

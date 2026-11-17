@@ -379,7 +379,11 @@
   /* « Ce véhicule m'intéresse » : le formulaire de contact s'ouvre avec le véhicule déjà choisi */
   document.querySelectorAll("a[data-vehicule]").forEach(function (a) {
     a.addEventListener("click", function () {
-      try { sessionStorage.setItem("zycar-vehicule", a.getAttribute("data-vehicule")); } catch (e) {}
+      try {
+        sessionStorage.setItem("zycar-vehicule", a.getAttribute("data-vehicule"));
+        if (a.hasAttribute("data-documents")) sessionStorage.setItem("zycar-documents", a.getAttribute("data-documents"));
+        else sessionStorage.removeItem("zycar-documents");
+      } catch (e) {}
     });
   });
   (function () {
@@ -394,8 +398,14 @@
     var liste = formulaire.querySelector("select[name='vehicule']"), trouve = false;
     if (liste) [].forEach.call(liste.options, function (o) { if (o.text === voulu) { liste.value = o.value || o.text; trouve = true; } });
     else { var champ = formulaire.querySelector("input[name='vehicule']"); if (champ) { champ.value = voulu; trouve = true; } }
+    var documents = null;
+    try { documents = sessionStorage.getItem("zycar-documents"); sessionStorage.removeItem("zycar-documents"); } catch (e) {}
     var message = formulaire.querySelector("textarea[name='message']");
-    if (message && !message.value) message.value = "Bonjour, je suis intéressé par : " + voulu + (trouve ? "." : " (véhicule réservé, merci de me prévenir s'il se libère).");
+    if (message && !message.value) {
+      message.value = documents
+        ? "Bonjour, pouvez-vous m'envoyer les documents du véhicule " + voulu + " (" + documents + ") ? Merci."
+        : "Bonjour, je suis intéressé par : " + voulu + (trouve ? "." : " (véhicule réservé, merci de me prévenir s'il se libère).");
+    }
   })();
 
   /* Halo qui suit la souris sur les cartes */

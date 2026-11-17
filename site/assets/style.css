@@ -593,3 +593,8 @@ a.coord:hover b { color: var(--cyan); }
 .apercu-demo { position: relative; z-index: 31; margin: 12px auto 0; width: fit-content; max-width: calc(100% - 32px); padding: 8px 16px; border-radius: 12px; background: #f5b83d; color: #1a1205; font-weight: 600; font-size: .92rem; text-align: center; }
 @media (max-width: 980px) { .fiche-haut { grid-template-columns: minmax(0, 1fr); } .fiche-infos { position: static; } .fiche-carac { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 460px) { .fiche-carac { grid-template-columns: minmax(0, 1fr); } .fiche-vignette { width: 76px; } }
+.fiche-docs { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.fiche-doc { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 16px; border: 1px solid var(--bord); background: var(--verre); }
+.fiche-doc__icone { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: rgba(var(--a), 0.12); color: var(--cyan); }
+.fiche-doc span:last-child { display: grid; }
+.fiche-doc small { color: #6fe0a2; font-size: .88rem; }
