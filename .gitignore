@@ -1,0 +1,9 @@
+__pycache__/
+# photos des annonces : téléchargées depuis le CRM à chaque construction
+site/assets/annonces/
+# testeur automatique
+tests/node_modules/
+tests/.site/
+tests/test-results/
+tests/playwright-report/
+tests/.site-crm.json

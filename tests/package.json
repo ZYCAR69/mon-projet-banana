@@ -1,0 +1,11 @@
+{
+  "name": "zycar-site-tests",
+  "private": true,
+  "description": "Testeur automatique du site zycar.fr",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}

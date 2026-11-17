@@ -1,0 +1,34 @@
+{
+  "stock": [
+    { "nom": "Audi SQ7 4.0 V8 TDI", "annee": "2018", "km": 98000, "prix": 52990 },
+    { "nom": "Volkswagen Golf GTI TCR", "annee": "2019", "km": 54000, "prix": 31490 }
+  ],
+  "galerie": [],
+  "annonces": [
+    {
+      "id": "test1", "statut": "en_vente", "marque": "Audi", "modele": "SQ7", "version": "4.0 V8 TDI",
+      "titre": "Audi SQ7 4.0 V8 TDI", "annee": "2018", "mise_en_circulation": "2018-04", "km": 98000, "prix": 52990,
+      "carburant": "Diesel", "boite": "Automatique", "puissance_ch": 435, "puissance_fiscale": 37, "couleur": "Gris Floret",
+      "portes": 5, "places": 7, "carrosserie": "SUV", "cles": 2, "norme_euro": "Euro 6", "co2": 199, "cylindree": 3956,
+      "equipements": ["Toit panoramique", "Affichage tête haute", "Caméra 360°", "Régulateur adaptatif", "Jantes 22 pouces"],
+      "historique": "2 propriétaires, entretien suivi en concession.",
+      "description": "Description de test.\n\nDeuxième paragraphe.",
+      "photos": ["{GALERIE}/03-audi-sq7.webp", "{GALERIE}/02-bmw-m5.webp", "{GALERIE}/01-porsche-panamera.webp"],
+      "rapport": {
+        "date": "2026-11-02", "remarque": "Très bon état général.",
+        "conformes": ["Moteur", "Freins", "Pneus avant (6 mm)"],
+        "defauts": [{ "point": "Jante avant gauche", "note": "Rayure légère.", "photos": ["{GALERIE}/03-audi-sq7.webp"] }]
+      },
+      "documents": [{ "piece": "Carnet d'entretien", "date": null }, { "piece": "Rapport d'expertise", "date": "2026-10-28" }],
+      "leboncoin": "https://www.leboncoin.fr/boutique/6770880/zycar.htm"
+    },
+    {
+      "id": "test2", "statut": "reserve", "marque": "Volkswagen", "modele": "Golf GTI", "version": "TCR",
+      "titre": "Volkswagen Golf GTI TCR", "annee": "2019", "mise_en_circulation": "2019-09", "km": 54000, "prix": 31490,
+      "carburant": "Essence", "boite": "Automatique", "equipements": [], "historique": "", "description": "",
+      "photos": ["{GALERIE}/16-volkswagen-golf-gti.webp"],
+      "rapport": { "date": "", "remarque": "", "conformes": ["Moteur"], "defauts": [] },
+      "documents": [], "leboncoin": null
+    }
+  ]
+}
