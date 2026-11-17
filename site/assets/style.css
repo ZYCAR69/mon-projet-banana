@@ -598,3 +598,7 @@ a.coord:hover b { color: var(--cyan); }
 .fiche-doc__icone { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: rgba(var(--a), 0.12); color: var(--cyan); }
 .fiche-doc span:last-child { display: grid; }
 .fiche-doc small { color: #6fe0a2; font-size: .88rem; }
+.article__figure { margin: 8px 0 0; display: grid; gap: 8px; }
+.article__figure .article__image { margin-top: 0; }
+.article__figure figcaption { color: var(--doux); font-size: .82rem; }
+.article__figure figcaption a { color: inherit; }
