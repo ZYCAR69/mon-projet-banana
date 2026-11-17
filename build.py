@@ -324,6 +324,7 @@ def construire(sortie, apercu=False):
     liens = "".join("  <url><loc>{}/{}</loc><lastmod>{}</lastmod></url>\n".format(DOMAINE, "" if n == "index.html" else n, jour) for n in pages)
     (sortie / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + liens + "</urlset>\n", encoding="utf-8")
     shutil.copy(RACINE / "src" / "robots.txt", sortie / "robots.txt")
+    shutil.copy(RACINE / "src" / "_redirects", sortie / "_redirects")  # redirections Netlify
 
 
 if __name__ == "__main__":

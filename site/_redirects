@@ -1,0 +1,17 @@
+# Anciennes adresses du site systeme.io → nouvelles pages (redirections permanentes).
+# Elles gardent le référencement Google acquis et évitent les pages introuvables.
+/a-propos        /a-propos.html     301
+/faq             /faq.html          301
+/contact         /recherche.html    301
+/posts           /blog.html         301
+/article         /blog.html         301
+/hybride         /vehicules.html    301
+/sportive        /vehicules.html    301
+/suv             /vehicules.html    301
+/compacte        /vehicules.html    301
+/-les-meilleurs-modles-de-voitures--importer-dallemagne                     /blog-importer-voiture-allemagne-etapes.html  301
+/-pourquoi-les-voitures-hybrides-sont-moins-chres-en-allemagne-quen-france-  /blog-combien-coute-import-voiture-allemagne.html  301
+/les-nouvelles-tendances-en-matire-dimportation-de-voitures                 /blog-mandataire-import-auto.html  301
+
+# Page d'erreur pour toute adresse inconnue
+/*               /404.html          404
